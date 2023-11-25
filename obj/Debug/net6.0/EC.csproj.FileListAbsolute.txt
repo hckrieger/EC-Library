@@ -1,0 +1,12 @@
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\bin\Debug\net6.0\EC.deps.json
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\bin\Debug\net6.0\EC.dll
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\bin\Debug\net6.0\EC.pdb
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\EC.csproj.AssemblyReference.cache
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\EC.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\EC.AssemblyInfoInputs.cache
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\EC.AssemblyInfo.cs
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\EC.csproj.CoreCompileInputs.cache
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\EC.dll
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\refint\EC.dll
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\EC.pdb
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\ref\EC.dll
