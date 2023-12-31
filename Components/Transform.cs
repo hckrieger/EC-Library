@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace EC.Components
 {
+	/// <summary>
+	/// Represents the position, rotation, and scale of an entity, both locally and in the world context.
+	/// It allows for hierarchical transformations by maintaining parent-child relationships.
+	/// </summary>
 	public class Transform : Component
 	{
 		private Vector2 position;
@@ -18,8 +22,10 @@ namespace EC.Components
 		private Transform parent;
 		private List<Transform> children = null;
 
+		/// <summary> Triggered when the position is changed. </summary>
 		public event Action PositionChanged;
 
+		/// <summary> Gets or sets the local position of the entity. </summary>
 		public Vector2 LocalPosition
 		{
 			get { return position; } 
@@ -33,18 +39,23 @@ namespace EC.Components
 			}
 		}
 
+		/// <summary> Gets or sets the local rotation of the entity. </summary>
 		public float LocalRotation
 		{
 			get { return rotation; }
 			set { rotation = value; }
 		}
 
+		/// <summary> Gets or sets the local scale of the entity. </summary>
 		public float LocalScale
 		{
 			get { return scale; }
 			set { scale = value; }
 		}
 
+		/// <summary>
+		/// Gets or sets the parent of this transform. Changing the parent will update the world transformations accordingly.
+		/// </summary>
 		public Transform Parent
 		{
 			get { return parent; }
@@ -82,7 +93,8 @@ namespace EC.Components
 
 			}
 		}
-		//WorldPosition
+
+		/// <summary> Gets the world position of the entity, considering the hierarchy. </summary>
 		public Vector2 Position
 		{
 			get
@@ -91,7 +103,7 @@ namespace EC.Components
 			}
 		}
 
-		//WorldRotation
+		/// <summary> Gets the world rotation of the entity, considering the hierarchy. </summary>
 		public float Rotation
 		{
 			get
@@ -101,7 +113,7 @@ namespace EC.Components
 		}
 
 
-		//WorldScale
+		/// <summary> Gets the world scale of the entity, considering the hierarchy. </summary>
 		public float Scale
 		{
 			get
@@ -110,6 +122,10 @@ namespace EC.Components
 			}
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the Transform class.
+		/// </summary>
+		/// <param name="entity">The entity to which this transform is attached.</param>
 		public Transform(Entity entity) : base(entity)
 		{
 			position = Vector2.Zero;

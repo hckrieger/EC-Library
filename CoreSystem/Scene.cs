@@ -29,7 +29,7 @@ namespace EC.CoreSystem
 			entitiesToAdd = new List<Entity>();
 			entitiesToRemove = new List<Entity>();
 
-			ProcessEntityChanges();
+			//ProcessEntityChanges();
 		}
 
 
@@ -92,6 +92,7 @@ namespace EC.CoreSystem
 
 			foreach (var entity in entitiesToRemove)
 			{
+				entity.RemoveAllComponents();
 				entities.Remove(entity);
 				Game.Components.Remove(entity);
 			}

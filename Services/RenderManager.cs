@@ -12,35 +12,38 @@ namespace EC.Services
 {
     public class RenderManager : IService
     {
-		private GraphicsAssetManager assetManager;
+		public GraphicsAssetManager GraphicsAssetManager { get; private set; }
+  
         private SpriteBatch spriteBatch;
 
 
-        public RenderManager(GraphicsAssetManager assetManager, SpriteBatch spriteBatch)
+        public RenderManager(GraphicsAssetManager graphicsAssetManager, SpriteBatch spriteBatch)
         {
-            this.assetManager = assetManager;
+            GraphicsAssetManager = graphicsAssetManager;
             this.spriteBatch = spriteBatch;
             
         
         }
 
 
-
-
-        public void DrawString(string fontName, string text, Vector2 position, Color color)
+        public void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects spriteEffects, float layerDepth)
         {
-            spriteBatch.DrawString(assetManager.LoadFont(fontName), text, position, color);
+            if (spriteFont == null) return;
+            spriteBatch.DrawString(spriteFont, text, position, color, rotation, origin, scale, spriteEffects, layerDepth);
         }
 
-        public void DrawSprite(string spriteName, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale)
+        public void DrawSprite(Texture2D spriteTexture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects spriteEffects, float layerDepth)
         {
-            
-            spriteBatch.Draw(assetManager.LoadSprite(spriteName), position, sourceRectangle, color, rotation, origin, scale, SpriteEffects.None, 1f);
+            if (spriteTexture == null) return;
+            spriteBatch.Draw(spriteTexture, position, sourceRectangle, color, rotation, origin, scale, spriteEffects, layerDepth);
         }
 
-        public void DrawRectangle(string rectangleName, Vector2 position, int width, int height, Color color, Vector2 origin, float rotation = 0f, float scale = 1f, float layerDepth = 1f)
-        {
-            spriteBatch.Draw(assetManager.LoadRectangle(rectangleName, width, height), position, null, color, rotation, origin, scale, SpriteEffects.None, layerDepth);
+		public void DrawRectangle(Texture2D rectangleTexture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects spriteEffects, float layerDepth)
+		{
+            if (rectangleTexture == null) return;
+            spriteBatch.Draw(rectangleTexture, position, sourceRectangle ?? new Rectangle(0, 0, rectangleTexture.Width, rectangleTexture.Height), color, rotation, origin, scale, SpriteEffects.None, layerDepth);
         }
+
+
     }
 }

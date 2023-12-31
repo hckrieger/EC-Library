@@ -36,7 +36,7 @@ namespace EC.CoreSystem
             if (!components.ContainsKey(type))
             {
                 components[type] = component;
-                component.Intitialize();
+                component.Initialize();
                 component.Entity = this;
             }
             else
@@ -96,17 +96,23 @@ namespace EC.CoreSystem
             Type type = typeof(T);
             if (components.ContainsKey(type))
             {
+				components[type].DetachEvents();
                 components.Remove(type);
             }
         }
-
 		/// <summary>
 		/// Removes all components from the entity.
 		/// </summary>
-		public void RemoveAllComponents() 
+		public void RemoveAllComponents()
 		{
+			foreach (var component in components.Values)
+			{
+				component.DetachEvents(); // Ensure this matches the method name defined in the Component class
+			}
 			components.Clear();
 		}
+
+
 
 		public override void Update(GameTime gameTime)
         {
@@ -130,7 +136,7 @@ namespace EC.CoreSystem
 				Component component = kvp.Value;
 				if (component.IsEnabled)
 				{
-					component.Draw(gameTime);
+					component.Draw();
 				}
 			}
 
