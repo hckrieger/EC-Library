@@ -16,7 +16,7 @@ namespace EC.Services
 
 		public enum CollisionSide { Top, Bottom, Left, Right, None }
 
-		//Two circles colliding
+
 		public bool ShapesIntersect(CircleCollider2D circle1, CircleCollider2D circle2)
 		{
 			float radiusSum = circle1.Bounds.Radius + circle2.Bounds.Radius;

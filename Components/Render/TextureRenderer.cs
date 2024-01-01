@@ -17,6 +17,7 @@ namespace EC.Components.Render
 
 		protected Texture2D Texture { get; set; }
 
+		public Rectangle? SourceRectangle { get; set; }
 
 		/// <summary>
 		/// Gets the width fo the texture associated with this renderer. 
@@ -32,6 +33,21 @@ namespace EC.Components.Render
 
 		public TextureRenderer(Game game, Entity entity) : base(game, entity)
 		{
+		}
+
+		/// <summary>
+		/// Draws the sprite using the defined properties and the RenderManager.
+		/// </summary>
+		public override void Draw()
+		{
+			if (IsVisible && Texture != null)
+			{
+				Vector2 origin = Origin?.Value ?? Vector2.Zero;
+
+				// If SourceRectangle is null, the entire texture is drawn.
+				// If it's set, only that portion of the texture is drawn.
+				renderManager.DrawTexture(Texture, Transform.Position, SourceRectangle, Color, Transform.Rotation, origin, Transform?.Scale ?? 1f, SpriteEffects, LayerDepth);
+			}
 		}
 	}
 }

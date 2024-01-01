@@ -32,18 +32,12 @@ namespace EC.Services
             spriteBatch.DrawString(spriteFont, text, position, color, rotation, origin, scale, spriteEffects, layerDepth);
         }
 
-        public void DrawSprite(Texture2D spriteTexture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects spriteEffects, float layerDepth)
-        {
-            if (spriteTexture == null) return;
-            spriteBatch.Draw(spriteTexture, position, sourceRectangle, color, rotation, origin, scale, spriteEffects, layerDepth);
-        }
-
-		public void DrawRectangle(Texture2D rectangleTexture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects spriteEffects, float layerDepth)
+		public void DrawTexture(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects spriteEffects, float layerDepth)
 		{
-            if (rectangleTexture == null) return;
-            spriteBatch.Draw(rectangleTexture, position, sourceRectangle ?? new Rectangle(0, 0, rectangleTexture.Width, rectangleTexture.Height), color, rotation, origin, scale, SpriteEffects.None, layerDepth);
-        }
+			if (texture == null) return;
+			spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, spriteEffects, layerDepth);
+		}
 
 
-    }
+	}
 }

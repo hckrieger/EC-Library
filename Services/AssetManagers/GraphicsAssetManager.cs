@@ -15,9 +15,8 @@ namespace EC.Services.AssetManagers
         private ContentManager content;
         private GraphicsDevice graphics;
 
-        private Dictionary<string, Texture2D> spriteCache = new Dictionary<string, Texture2D>();
+        private Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
         private Dictionary<string, SpriteFont> fontCache = new Dictionary<string, SpriteFont>();
-        private Dictionary<string, Texture2D> rectangleCache = new Dictionary<string, Texture2D>();
         public GraphicsAssetManager(ContentManager content, GraphicsDevice graphics)
         {
             this.content = content;
@@ -34,10 +33,10 @@ namespace EC.Services.AssetManagers
 
         public Texture2D LoadSprite(string spriteName)
         {
-            if (!spriteCache.TryGetValue(spriteName, out Texture2D sprite))
+            if (!textureCache.TryGetValue(spriteName, out Texture2D sprite))
             {
                 sprite = content.Load<Texture2D>(spriteName);
-                spriteCache[spriteName] = sprite;
+                textureCache[spriteName] = sprite;
             }
             return sprite;
         }
@@ -54,14 +53,13 @@ namespace EC.Services.AssetManagers
 
         public void ClearTotalCache()
         {
-            spriteCache.Clear();
+            textureCache.Clear();
             fontCache.Clear();
-            rectangleCache.Clear();
         }
 
         public Texture2D LoadRectangle(string rectangleName, int width, int height)
         {
-            if (!rectangleCache.TryGetValue(rectangleName, out Texture2D rectangleTexture))
+            if (!textureCache.TryGetValue(rectangleName, out Texture2D rectangleTexture))
             {
 				Color[] data = new Color[width * height];
 				rectangleTexture = new Texture2D(graphics, width, height);
@@ -70,11 +68,52 @@ namespace EC.Services.AssetManagers
 
 				rectangleTexture.SetData(data);
 
-                rectangleCache[rectangleName] = rectangleTexture;
+                textureCache[rectangleName] = rectangleTexture;
 			}
 
 
             return rectangleTexture;
 		}
+
+        public Texture2D LoadCircle(string circleName, int radius)
+        {
+           if (!textureCache.TryGetValue(circleName, out Texture2D circleTexture))
+           {
+                int diameter = radius * 2;
+                circleTexture = new Texture2D(graphics, diameter, diameter);
+                Color[] data = new Color[diameter * diameter];
+
+                //Calculate the radius squared for efficiency
+                int radiusSquared = radius * radius;
+                int centerX = radius;
+                int centerY = radius;
+
+                for (int x = 0; x < diameter; x++)
+                {
+					for (int y = 0; y < diameter; y++)
+					{
+                        int dx = x - centerX;
+                        int dy = y - centerY;
+                        int distanceSquared = dx * dx + dy * dy;    
+
+                        // If the pixel is within the circle's radius, set it to white.
+                        if (distanceSquared <= radiusSquared)
+                        {
+                            data[x + y * diameter] = Color.White;
+                        }
+                        else
+                        {
+                            data[x + y * diameter] = Color.Transparent;
+                        }
+					}
+				}
+
+                circleTexture.SetData(data);
+                textureCache[circleName] = circleTexture;
+
+           }
+
+            return circleTexture;
+        }
     }
 }

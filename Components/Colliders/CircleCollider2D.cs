@@ -87,10 +87,6 @@ namespace EC.Components.Colliders
 			boundsCache = new Circle(localBounds.Center + position - originOffset, localBounds.Radius);
 		}
 
-		~CircleCollider2D()
-		{
-			if (transform != null)
-				transform.PositionChanged -= UpdateBoundsCache;
-		}
+	
 	}
 }

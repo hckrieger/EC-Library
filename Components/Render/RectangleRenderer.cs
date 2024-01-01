@@ -33,19 +33,6 @@ namespace EC.Components.Render
 			Texture = renderManager.GraphicsAssetManager.LoadRectangle(textureName, width, height);
 		}
 
-		/// <summary>
-		/// Draws the rectangle using the defined properties and the RenderManager
-		/// </summary>
-		public override void Draw()
-		{
-			if (IsVisible && Texture != null)
-			{
-				Vector2 origin = Origin?.Value ?? Vector2.Zero;
 
-				Rectangle? sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
-				renderManager.DrawRectangle(Texture, Transform.Position, sourceRectangle, Color, Transform.Rotation, origin, Transform.Scale, SpriteEffects, LayerDepth);
-			}
-			
-		}
 	}
 }

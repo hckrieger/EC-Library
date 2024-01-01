@@ -16,7 +16,7 @@ namespace EC.Components.Render
 	/// </summary>
 	public class SpriteRenderer : TextureRenderer
 	{
-		public Rectangle? SourceRectangle { get; set; }
+		
 
 		/// <summary>
 		/// Initializes a new instance of the SpriteRenderer class.
@@ -30,20 +30,7 @@ namespace EC.Components.Render
 			Texture = renderManager.GraphicsAssetManager.LoadSprite(texturePath);
 		}
 
-		/// <summary>
-		/// Draws the sprite using the defined properties and the RenderManager.
-		/// </summary>
-		public override void Draw()
-		{
-			if (IsVisible && Texture != null)
-			{
-				Vector2 origin = Origin?.Value ?? Vector2.Zero;
 
-				// If SourceRectangle is null, the entire texture is drawn.
-				// If it's set, only that portion of the texture is drawn.
-				renderManager.DrawSprite(Texture, Transform.Position, SourceRectangle, Color, Transform.Rotation, origin, Transform.Scale, SpriteEffects, LayerDepth);
-			}
-		}
 
 	}
 }
