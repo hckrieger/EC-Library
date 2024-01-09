@@ -11,15 +11,11 @@ namespace EC.Components.Colliders
 	/// <summary>
 	/// Represents a 2D axis-aligned bounding box collider component for collision detection and physics interactions.
 	/// </summary>
-	public class BoxCollider2D : Component
+	public class BoxCollider2D : Collider2D
 	{
-		private Transform transform;
-		private Origin origin;
 		private Rectangle localBounds;
 		private Rectangle boundsCache;
-		private bool boundsNeedsUpdate = true;
-
-
+		
 		/// <summary>
 		/// Initializes a new BoxCollider2D with specified dimensions.
 		/// </summary>
@@ -28,35 +24,13 @@ namespace EC.Components.Colliders
 		/// <param name="width">The width of the collider.</param>
 		/// <param name="height">The height of the collider.</param>
 		/// <param name="entity">The entity this collider is attached to.</param>
-		public BoxCollider2D(int x, int y, int width, int height, Entity entity) : base(entity)
+		public BoxCollider2D(Rectangle rectangle, Entity entity) : base(entity)
 		{
 
-			localBounds = new Rectangle(x, y, width, height);
-
-			transform = entity.GetComponent<Transform>();
-			origin = entity.GetComponent<Origin>();
-
-			if (transform != null)
-			{
-				transform.PositionChanged += UpdateBoundsCache;
-			}
+			localBounds = rectangle;
 		}
 
-		/// <summary>
-		/// Called when the collider is destroyed or no longer in use to detach event handlers.
-		/// </summary>
-		public override void DetachEvents()
-		{
-			if (transform != null)
-			{
-				transform.PositionChanged -= UpdateBoundsCache;
-			}
-		}
 
-		private void UpdateBoundsCache() 
-		{
-			boundsNeedsUpdate = true;
-		}
 
 		/// <summary>
 		/// Gets or sets the local bounds of the collider.
@@ -78,10 +52,10 @@ namespace EC.Components.Colliders
 		{
 			get
 			{
-				if (boundsNeedsUpdate)
+				if (boundsNeedUpdate)
 				{
 					UpdateGlobalBounds();
-					boundsNeedsUpdate = false;
+					boundsNeedUpdate = false;
 				}
 
 				return boundsCache;
@@ -91,9 +65,9 @@ namespace EC.Components.Colliders
 		/// <summary>
 		/// Calculates the global bounds of the collider.
 		/// </summary>
-		private void UpdateGlobalBounds()
+		protected override void UpdateGlobalBounds()
 		{
-			var position = transform?.Position ?? Vector2.Zero;
+			var position = transform?.Position ??  Vector2.Zero;
 			var originOffset = origin?.Value ?? Vector2.Zero;
 
 			boundsCache = new Rectangle(

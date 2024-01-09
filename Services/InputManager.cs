@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace EC.Services
 {
-    public class InputManager : GameComponent, IService
+	/// <summary>
+	/// Manages the input from keyboard and mouse, providing methods to check the current and previous states of input devices.
+	/// This class helps in detecting various input actions like key presses, key releases, and mouse movements.
+	/// </summary>
+	public class InputManager : GameComponent, IService
     {
         private KeyboardState previousKeyboardState;
         private KeyboardState currentKeyboardState;
@@ -17,11 +21,20 @@ namespace EC.Services
         private MouseState currentMouseState;
         private DisplayManager displayManager;
 
-        public InputManager(DisplayManager displayManager, Game game) : base(game)
+		/// <summary>
+		/// Initializes a new instance of the InputManager class.
+		/// </summary>
+		/// <param name="displayManager">The display manager used to help manage input relative to the game display.</param>
+		/// <param name="game">The game instance this component belongs to.</param>
+		public InputManager(DisplayManager displayManager, Game game) : base(game)
         {
             this.displayManager = displayManager;
         }
 
+		/// <summary>
+		/// Updates the input states for keyboard and mouse. This method should be called every frame to update the input state.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
@@ -33,55 +46,99 @@ namespace EC.Services
             currentMouseState = Mouse.GetState();
 		}
 
-        public bool KeyHeld(Keys key)
+		/// <summary>
+		/// Checks if the specified key is currently being held down.
+		/// </summary>
+		/// <param name="key">The key to check.</param>
+		/// <returns>True if the key is held down; otherwise, false.</returns>
+		public bool KeyHeld(Keys key)
         {
             return currentKeyboardState.IsKeyDown(key);
         }
 
-        public bool KeyJustPressed(Keys key)
+		/// <summary>
+		/// Checks if the specified key was just pressed in the current frame.
+		/// </summary>
+		/// <param name="key">The key to check.</param>
+		/// <returns>True if the key was just pressed; otherwise, false.</returns>
+		public bool KeyJustPressed(Keys key)
         {
             return (previousKeyboardState.IsKeyUp(key) &&
                     currentKeyboardState.IsKeyDown(key));
         }
 
-        public bool KeyUpCurrently(Keys key)
+		/// <summary>
+		/// Checks if the specified key is currently up (not pressed).
+		/// </summary>
+		/// <param name="key">The key to check.</param>
+		/// <returns>True if the key is up; otherwise, false.</returns>
+		public bool KeyUpCurrently(Keys key)
         {
             return currentKeyboardState.IsKeyUp(key);
         }
 
-        public bool KeyJustUp(Keys keys)
+		/// <summary>
+		/// Checks if the specified key was just released in the current frame.
+		/// </summary>
+		/// <param name="keys">The key to check.</param>
+		/// <returns>True if the key was just released; otherwise, false.</returns>
+		public bool KeyJustUp(Keys keys)
         {
             return previousKeyboardState.IsKeyDown(keys) && currentKeyboardState.IsKeyUp(keys);
         }
 
-        public bool MouseButtonHeld()
+		/// <summary>
+		/// Checks if the left mouse button is currently being held down.
+		/// </summary>
+		/// <returns>True if the left mouse button is held down; otherwise, false.</returns>
+		public bool MouseButtonHeld()
         {
             return currentMouseState.LeftButton == ButtonState.Pressed;
         }
 
-        public bool MouseJustPressed()
+		/// <summary>
+		/// Checks if the left mouse button was just pressed in the current frame.
+		/// </summary>
+		/// <returns>True if the left mouse button was just pressed; otherwise, false.</returns>
+		public bool MouseJustPressed()
         {
             return (previousMouseState.LeftButton == ButtonState.Released) &&
                    (currentMouseState.LeftButton == ButtonState.Pressed);
         }
 
-        public bool MouseUpCurrently()
+		/// <summary>
+		/// Checks if the left mouse button is currently up (not pressed).
+		/// </summary>
+		/// <returns>True if the left mouse button is up; otherwise, false.</returns>
+		public bool MouseUpCurrently()
         {
             return currentMouseState.LeftButton == ButtonState.Released;
         }
 
-        public bool MouseButtonJustUp()
+		/// <summary>
+		/// Checks if the left mouse button was just released in the current frame.
+		/// </summary>
+		/// <returns>True if the left mouse button was just released; otherwise, false.</returns>
+		public bool MouseButtonJustUp()
         {
             return (previousMouseState.LeftButton == ButtonState.Pressed) &&
                    (currentMouseState.LeftButton == ButtonState.Released);
         }
 
-        public Vector2 MousePosition()
+		/// <summary>
+		/// Gets the current position of the mouse cursor.
+		/// </summary>
+		/// <returns>The current position of the mouse cursor as a Vector2.</returns>
+		public Vector2 MousePosition()
         {
             return currentMouseState.Position.ToVector2();
         }
 
-        public bool MouseOnScreen()
+		/// <summary>
+		/// Checks if the mouse cursor is currently within the screen boundaries.
+		/// </summary>
+		/// <returns>True if the mouse is on the screen; otherwise, false.</returns>
+		public bool MouseOnScreen()
         {
             if (MousePosition().X > 0 && MousePosition().X < displayManager.Width &&
                 MousePosition().Y > 0 && MousePosition().Y < displayManager.Height)

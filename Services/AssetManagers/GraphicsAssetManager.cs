@@ -10,28 +10,48 @@ using System.Threading.Tasks;
 
 namespace EC.Services.AssetManagers
 {
-    public class GraphicsAssetManager : IService
+	/// <summary>
+	/// Manages the loading, caching, and unloading of graphical assets such as textures and fonts.
+	/// This class uses caching to optimize the performance by reusing assets that are already loaded.
+	/// </summary>
+	public class GraphicsAssetManager : IService
     {
         private ContentManager content;
         private GraphicsDevice graphics;
 
-        private Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
+		// Caches for textures and fonts.
+		private Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
         private Dictionary<string, SpriteFont> fontCache = new Dictionary<string, SpriteFont>();
-        public GraphicsAssetManager(ContentManager content, GraphicsDevice graphics)
+
+		/// <summary>
+		/// Initializes a new instance of the GraphicsAssetManager class.
+		/// </summary>
+		/// <param name="content">ContentManager used to load assets.</param>
+		/// <param name="graphics">GraphicsDevice used for creating dynamic textures.</param>
+		public GraphicsAssetManager(ContentManager content, GraphicsDevice graphics)
         {
             this.content = content;
             this.graphics = graphics;
 
 		}
 
-       
 
-        public void UnloadContent()
+		/// <summary>
+		/// Unloads all content managed by the ContentManager. This should be called when the content is no longer needed.
+		/// </summary>
+		public void UnloadContent()
         {
             content.Unload();
+            ClearTotalCache();
         }
 
-        public Texture2D LoadSprite(string spriteName)
+		/// <summary>
+		/// Loads a sprite texture from the content pipeline. If the sprite is already loaded,
+		/// returns the cached version for performance optimization.
+		/// </summary>
+		/// <param name="spriteName">The name of the sprite to load.</param>
+		/// <returns>The loaded Texture2D object.</returns>
+		public Texture2D LoadSprite(string spriteName)
         {
             if (!textureCache.TryGetValue(spriteName, out Texture2D sprite))
             {
@@ -41,7 +61,14 @@ namespace EC.Services.AssetManagers
             return sprite;
         }
 
-        public SpriteFont LoadFont(string fontName)
+
+		/// <summary>
+		/// Loads a font from the content pipeline. If the font is already loaded,
+		/// returns the cached version for performance optimization.
+		/// </summary>
+		/// <param name="fontName">The name of the font to load.</param>
+		/// <returns>The loaded SpriteFont object.</returns>
+		public SpriteFont LoadFont(string fontName)
         {
             if (!fontCache.TryGetValue(fontName, out SpriteFont font))
             {
@@ -51,13 +78,25 @@ namespace EC.Services.AssetManagers
             return font;
         }
 
-        public void ClearTotalCache()
+		/// <summary>
+		/// Clears the entire cache, both textures and fonts. This can be useful when a large number of assets are no longer needed,
+		/// such as when changing levels or scenes.
+		/// </summary>
+		public void ClearTotalCache()
         {
             textureCache.Clear();
             fontCache.Clear();
         }
 
-        public Texture2D LoadRectangle(string rectangleName, int width, int height)
+		/// <summary>
+		/// Creates and loads a rectangle texture into the cache. If a rectangle texture with the same name already exists, 
+		/// it returns the cached version.
+		/// </summary>
+		/// <param name="rectangleName">The unique name for the rectangle texture.</param>
+		/// <param name="width">Width of the rectangle.</param>
+		/// <param name="height">Height of the rectangle.</param>
+		/// <returns>The created Texture2D object representing a rectangle.</returns>
+		public Texture2D LoadRectangle(string rectangleName, int width, int height)
         {
             if (!textureCache.TryGetValue(rectangleName, out Texture2D rectangleTexture))
             {
@@ -75,7 +114,14 @@ namespace EC.Services.AssetManagers
             return rectangleTexture;
 		}
 
-        public Texture2D LoadCircle(string circleName, int radius)
+		/// <summary>
+		/// Creates and loads a circle texture into the cache. If a circle texture with the same name already exists,
+		/// it returns the cached version.
+		/// </summary>
+		/// <param name="circleName">The unique name for the circle texture.</param>
+		/// <param name="radius">Radius of the circle.</param>
+		/// <returns>The created Texture2D object representing a circle.</returns>
+		public Texture2D LoadCircle(string circleName, int radius)
         {
            if (!textureCache.TryGetValue(circleName, out Texture2D circleTexture))
            {

@@ -12,7 +12,7 @@ namespace EC.Components.Render
 {
 	public class TextRenderer : Renderer
 	{
-		private SpriteFont font;
+		public SpriteFont Font { get; set; }
 		private string text;
 		private Alignment textAlignment;
 		private Vector2 alignedPosition;
@@ -67,7 +67,7 @@ namespace EC.Components.Render
 		/// <summary>
 		/// Initializes a new instance of the TextRenderer class.
 		/// </summary>
-		/// <param name="fontName">The name of the font to use for rendering the text.</param>
+		/// <param name="fontName">The name of the Font to use for rendering the text.</param>
 		/// <param name="text">The initial text to render.</param>
 		/// <param name="color">The color of the text. Inherited from the Renderer class.</param>
 		/// <param name="game">The game instance this renderer belongs to.</param>
@@ -75,17 +75,17 @@ namespace EC.Components.Render
 		public TextRenderer(string fontName, string text, Color color, Game game, Entity entity)
 			: base(game, entity)
 		{
-			font = renderManager.GraphicsAssetManager.LoadFont(fontName);
+			Font = renderManager.GraphicsAssetManager.LoadFont(fontName);
 			this.text = text;
 			Color = color; // Inherits Color property from Renderer
 			textAlignment = Alignment.Left; // Default alignment
-			textSize = font.MeasureString(text);
+			textSize = Font.MeasureString(text);
 			CalculateAlignedPosition();
 		}
 
 		private void CalculateAlignedPosition()
 		{
-			if (font == null) return;
+			if (Font == null) return;
 
 			
 			alignedPosition = Transform?.Position ?? Vector2.Zero;
@@ -108,9 +108,9 @@ namespace EC.Components.Render
 		/// </summary>
 		public override void Draw()
 		{
-			if (IsVisible && font != null) // Inherits IsVisible property from Renderer
+			if (IsVisible && Font != null) // Inherits IsVisible property from Renderer
 			{
-				renderManager.DrawString(font, text, alignedPosition, Color, Transform?.Rotation ?? 0, Origin?.Value ?? Vector2.Zero, Transform?.Scale ?? 1f, SpriteEffects, LayerDepth);
+				renderManager.DrawString(Font, text, alignedPosition, Color, Transform?.Rotation ?? 0, Origin?.Value ?? Vector2.Zero, Transform?.Scale ?? 1f, SpriteEffects, LayerDepth);
 			}
 		}
 	}

@@ -29,15 +29,22 @@ namespace EC.CoreSystem
             IsEnabled = true;
         }
 
+		/// <summary>
+		/// Called when the component is destroyed or removed.
+		/// </summary>
 		public virtual void DetachEvents()
 		{
 			// Default implementation does nothing.
 			// Override this in derived classes to handle event detachment.
 		}
-		/// <summary>
-		/// Called when the component is destroyed or removed.
-		/// </summary>
 
+
+
+		public virtual void AttachEvents()
+		{
+			// Default implementation does nothing.
+			// Override this in derived classes to handle event attachment.
+		}
 
 		/// <summary> Called when the component is first added to an entity. </summary>
 		public virtual void Initialize()

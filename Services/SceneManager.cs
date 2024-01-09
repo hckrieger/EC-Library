@@ -80,6 +80,7 @@ namespace EC.Services
                 currentScene.Dispose();
                 scenes.Remove(currentScene.ID);
                 game.Components.Remove(currentScene);
+
             }
         }
 

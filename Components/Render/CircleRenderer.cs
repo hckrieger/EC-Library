@@ -27,6 +27,8 @@ namespace EC.Components.Render
 			Texture = renderManager.GraphicsAssetManager.LoadCircle(circleTextureName, radius);
 		}
 
+		
+
 
 	}
 }

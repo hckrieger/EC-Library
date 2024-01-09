@@ -15,7 +15,9 @@ namespace EC.Components.Render
 	{
 		protected string textureName;
 
-		protected Texture2D Texture { get; set; }
+		public Texture2D Texture { get; set; }
+
+
 
 		public Rectangle? SourceRectangle { get; set; }
 
@@ -28,6 +30,9 @@ namespace EC.Components.Render
 		/// Gets the height of the texture associated with this renderer.
 		/// </summary>
 		public int TextureHeight => Texture?.Height ?? 0;
+
+
+		public Vector2 TextureCenter => new Vector2(TextureWidth / 2, TextureHeight / 2);
 
 		// ... texture-specific properties and methods ...
 
