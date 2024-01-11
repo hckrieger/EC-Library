@@ -25,6 +25,10 @@ namespace EC.Components
 			{
 				return offsetValue;
 			}
+			set
+			{
+				offsetValue = value;	
+			}
 		}
 
 		/// <summary>

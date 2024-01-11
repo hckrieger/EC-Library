@@ -71,13 +71,13 @@ namespace EC.Components.UI
 
 			if (collider2D is CircleCollider2D circleCollider)
 			{
-				return circleCollider.Bounds.Contains(mousePosition) && inputManager.MouseButtonJustUp();
+				return circleCollider.Bounds.Contains(mousePosition) && inputManager.HasFullyClickedInBounds(circleCollider);
 			}
 			else if (collider2D is BoxCollider2D boxCollider)
 			{
 				// Rectangle bounds check for other TextureRenderer types
-				
-				return boxCollider.Bounds.Contains(mousePosition) && inputManager.MouseButtonJustUp();
+
+				return boxCollider.Bounds.Contains(mousePosition) && inputManager.HasFullyClickedInBounds(boxCollider);
 			}
 
 			return false;

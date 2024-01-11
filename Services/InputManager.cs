@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EC.Components.Colliders;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace EC.Services
         private MouseState previousMouseState;
         private MouseState currentMouseState;
         private DisplayManager displayManager;
+
+		private bool isMouseDownWithinBounds = false;	
 
 		/// <summary>
 		/// Initializes a new instance of the InputManager class.
@@ -124,6 +127,38 @@ namespace EC.Services
             return (previousMouseState.LeftButton == ButtonState.Pressed) &&
                    (currentMouseState.LeftButton == ButtonState.Released);
         }
+
+		public bool HasFullyClickedInBounds(Collider2D collider2D)
+		{
+			// Check for mouse down within bounds
+			if (MouseJustPressed())
+			{
+				if ((collider2D is BoxCollider2D boxCollider && boxCollider.Bounds.Contains(MousePosition())) ||
+					(collider2D is CircleCollider2D circleCollider && circleCollider.Bounds.Contains(MousePosition())))
+				{
+					isMouseDownWithinBounds = true;
+				}
+			}
+
+			// Check for mouse up within bounds
+			if (MouseButtonJustUp())
+			{
+				bool wasClickedWithinBounds = false;
+
+				if (collider2D is BoxCollider2D boxCollider && boxCollider.Bounds.Contains(MousePosition()) ||
+					collider2D is CircleCollider2D circleCollider && circleCollider.Bounds.Contains(MousePosition()))
+				{
+					wasClickedWithinBounds = isMouseDownWithinBounds;
+				}
+
+				isMouseDownWithinBounds = false; // Reset the state for the next check
+				return wasClickedWithinBounds;
+			}
+
+			return false;
+		}
+
+
 
 		/// <summary>
 		/// Gets the current position of the mouse cursor.
