@@ -16,7 +16,8 @@ namespace EC.Components.Render
 		private string text;
 		private Alignment textAlignment;
 		private Vector2 alignedPosition;
-		private Vector2 textSize; 
+		private Vector2 textSize;
+		private Entity entity;
 
 		/// <summary>
 		/// Defines text alignment options.
@@ -55,6 +56,14 @@ namespace EC.Components.Render
 		}
 
 		/// <summary>
+		/// Gets the size of the text
+		/// </summary>
+		public Vector2 GetSize
+		{
+			get => textSize;
+		}
+
+		/// <summary>
 		/// Gets the width of text in pixels
 		/// </summary>
 		public float Width => textSize.X;
@@ -63,6 +72,9 @@ namespace EC.Components.Render
 		/// Gets the height of text in pixels
 		/// </summary>
 		public float Height => textSize.Y;	
+
+		
+	
 
 		/// <summary>
 		/// Initializes a new instance of the TextRenderer class.
@@ -77,6 +89,7 @@ namespace EC.Components.Render
 		{
 			Font = renderManager.GraphicsAssetManager.LoadFont(fontName);
 			this.text = text;
+			this.entity = entity;
 			Color = color; // Inherits Color property from Renderer
 			textAlignment = Alignment.Left; // Default alignment
 			textSize = Font.MeasureString(text);
@@ -90,13 +103,27 @@ namespace EC.Components.Render
 			
 			alignedPosition = Transform?.Position ?? Vector2.Zero;
 
+			if (textAlignment == Alignment.Left)
+			{
+				if (entity.HasComponent<Origin>())
+					entity.RemoveComponent<Origin>();
+				return;
+			} else if (!entity.HasComponent<Origin>())
+			{
+				entity.AddComponent(new Origin(Vector2.Zero, entity));
+			}
+
+			var origin = entity.GetComponent<Origin>();	
+
 			switch (textAlignment)
 			{
+						
+
 				case Alignment.Center:
-					alignedPosition -= textSize / 2;
+					origin.Value = textSize / 2;
 					break;
 				case Alignment.Right:
-					alignedPosition -= new Vector2(textSize.X, 0);
+					origin.Value = new Vector2(textSize.X, 0);
 					break;
 					// Left alignment requires no adjustment as it's the default
 			}
@@ -110,7 +137,7 @@ namespace EC.Components.Render
 		{
 			if (IsVisible && Font != null) // Inherits IsVisible property from Renderer
 			{
-				renderManager.DrawString(Font, text, alignedPosition, Color, Transform?.Rotation ?? 0, Origin?.Value ?? Vector2.Zero, Transform?.Scale ?? 1f, SpriteEffects, LayerDepth);
+				renderManager.DrawString(Font, text, Transform.Position, Color, Transform?.Rotation ?? 0, Origin?.Value ?? Vector2.Zero, Transform?.Scale ?? 1f, SpriteEffects, LayerDepth);
 			}
 		}
 	}

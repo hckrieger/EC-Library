@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EC.Components;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,10 @@ namespace EC.CoreSystem
 		private List<Entity> entitiesToAdd;
 		private List<Entity> entitiesToRemove;
 
-		public string ID; 
+		public string ID;
+
+
+		protected Entity RootEntity { get; }
 
 		/// <summary>
 		/// Initializes a new instance of the Scene class.
@@ -29,9 +33,12 @@ namespace EC.CoreSystem
 			entitiesToAdd = new List<Entity>();
 			entitiesToRemove = new List<Entity>();
 
-			//ProcessEntityChanges();
+			RootEntity = new Entity(game);
+			RootEntity.AddComponent(new Transform(RootEntity));
+			AddEntity(RootEntity);
 		}
 
+		
 
 		/// <summary>
 		/// Adds a single entity to the scene. The entity will be added at the beginning of the next update cycle.
@@ -86,6 +93,10 @@ namespace EC.CoreSystem
 			{
 				entities.Add(entity);
 				Game.Components.Add(entity);
+
+				//If the entity has a transform, if it isn't the root entity and if it doesn't have a parent then add it as a parent to RootEntity. aefwef
+				if (entity.HasComponent<Transform>() && entity != RootEntity && entity.GetComponent<Transform>().Parent == null)
+					entity.GetComponent<Transform>().Parent = RootEntity.GetComponent<Transform>();
 			}
 
 			entitiesToAdd.Clear();

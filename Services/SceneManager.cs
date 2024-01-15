@@ -61,6 +61,7 @@ namespace EC.Services
             currentScene = scenes[name];
             game.Components.Add(currentScene);
             currentScene.Activate();
+            currentScene.Initialize();
          
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EC.Components;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,25 @@ namespace EC.CoreSystem
 		/// </summary>
 		public string ID { get; } = Guid.NewGuid().ToString();
         private readonly Dictionary<Type, Component> components = new Dictionary<Type, Component>();
+
+
+		/// <summary>
+		/// Because the Transform component is frequently used I'm acessing it directly in the Entity
+		/// </summary>
+		public Transform Transform
+		{
+			get
+			{
+				if (!HasComponent<Transform>())
+				{
+					AddComponent(new Transform(this));
+				}
+				return GetComponent<Transform>();
+
+			}
+
+
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the Entity class.

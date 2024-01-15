@@ -4,11 +4,13 @@ using EC.Components.Render;
 using EC.Components.UI;
 using EC.CoreSystem;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace EC.Utilities.Extensions
 {
@@ -108,6 +110,48 @@ namespace EC.Utilities.Extensions
 
 				entity.AddComponent(new CircleCollider2D(new Circle(vector, radius), entity));
 			}
+		}
+
+
+		/// <summary>
+		/// Loads a font 
+		/// </summary>
+		/// <param name="entity">The entity to which the texture and collider will be added</param>
+		/// <param name="path">The name identifier and path for the text renderer</param>
+		/// <param name="text">The text that will be displayed</param>
+		/// <param name="color">the color of the text</param>
+		/// <param name="game">The current game instance</param>
+		/// <param name="colliderShape"></param>
+		public static void LoadTextComponents(this Entity entity, string path, string text, Color color, Game game, TextRenderer.Alignment alignment = TextRenderer.Alignment.Left)
+		{
+			entity.AddComponent(new Transform(entity));
+			TextRenderer textRenderer = new TextRenderer(path, text, color, game, entity);
+			textRenderer.TextAlignment = alignment;
+			entity.AddComponent(textRenderer);
+
+			//entity.AddComponent(new Origin(Vector2.Zero, entity));
+
+			//switch (colliderShape != ColliderShape.None)
+			//{
+			//	case ColliderShape.Rectangle:
+			//		var textSize = textRenderer.GetSize;
+			//		entity.AddComponent(new BoxCollider2D(new Rectangle(0, 0, (int)textSize.X, (int)textSize.Y), entity));
+			//		break;
+			//	case ColliderShape.Circle:
+			//		int radius = Math.Min((int)textRenderer.Width, (int)textRenderer.Height);
+
+			//		var transform = entity.GetComponent<Transform>();
+			//		var origin = entity.GetComponent<Origin>();
+			//		var vector = new Vector2(transform.Position.X + origin.Value.X, transform.Position.Y + origin.Value.Y);
+			//		entity.AddComponent(new CircleCollider2D(new Circle(transform.Position, radius), entity));
+			//		break;
+			//	case ColliderShape.None:
+			//		// No collider added
+			//		break;
+			//	default:
+			//		throw new ArgumentException("Invalid collider shape");
+			//}
+
 		}
 
 	}

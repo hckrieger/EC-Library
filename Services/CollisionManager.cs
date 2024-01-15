@@ -41,7 +41,7 @@ namespace EC.Services
 		}
 
 
-		/// <summary>
+		/// <summary>ef
 		/// Determines if two colliders intersect. Supports BoxBox, CircleCircle, and BoxCircle collisions.
 		/// </summary>
 		/// <param name="collider1">The first collider, which can be either a BoxCollider2D or a CircleCollider2D.</param>

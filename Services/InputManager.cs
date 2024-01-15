@@ -22,7 +22,8 @@ namespace EC.Services
         private MouseState currentMouseState;
         private DisplayManager displayManager;
 
-		private bool isMouseDownWithinBounds = false;	
+		private bool isMousePressedWithinBounds = false;
+		private Dictionary<Collider2D, bool> mousePressedStates = new Dictionary<Collider2D, bool>();
 
 		/// <summary>
 		/// Initializes a new instance of the InputManager class.
@@ -87,6 +88,9 @@ namespace EC.Services
 		/// <returns>True if the key was just released; otherwise, false.</returns>
 		public bool KeyJustUp(Keys keys)
         {
+			if (mousePressedStates.Values.Any())
+				mousePressedStates.Clear();
+
             return previousKeyboardState.IsKeyDown(keys) && currentKeyboardState.IsKeyUp(keys);
         }
 
@@ -128,37 +132,51 @@ namespace EC.Services
                    (currentMouseState.LeftButton == ButtonState.Released);
         }
 
+		/// <summary>
+		/// Determines if a complete mouse click (press and release) occurred within the specified collider's bounds.
+		/// This method checks whether the mouse was pressed and released within the same collider bounds, 
+		/// ensuring that the full click action is contained within the collider.
+		/// </summary>
+		/// <param name="collider2D">The collider to check for mouse click containment. Can be either BoxCollider2D or CircleCollider2D.</param>
+		/// <returns>True if the mouse was pressed and released within the bounds of the specified collider; otherwise, false.</returns>
 		public bool HasFullyClickedInBounds(Collider2D collider2D)
 		{
-			// Check for mouse down within bounds
-			if (MouseJustPressed())
+			// Initialize state for the collider if not already present
+			if (!mousePressedStates.ContainsKey(collider2D))
 			{
-				if ((collider2D is BoxCollider2D boxCollider && boxCollider.Bounds.Contains(MousePosition())) ||
-					(collider2D is CircleCollider2D circleCollider && circleCollider.Bounds.Contains(MousePosition())))
-				{
-					isMouseDownWithinBounds = true;
-				}
+				mousePressedStates[collider2D] = false;
+			}
+
+			// Check for mouse down within bounds
+			if (MouseJustPressed() && IsMouseWithinCollider(collider2D))
+			{
+				mousePressedStates[collider2D] = true;
+
 			}
 
 			// Check for mouse up within bounds
 			if (MouseButtonJustUp())
 			{
-				bool wasClickedWithinBounds = false;
-
-				if (collider2D is BoxCollider2D boxCollider && boxCollider.Bounds.Contains(MousePosition()) ||
-					collider2D is CircleCollider2D circleCollider && circleCollider.Bounds.Contains(MousePosition()))
+				if (mousePressedStates[collider2D] && IsMouseWithinCollider(collider2D))
 				{
-					wasClickedWithinBounds = isMouseDownWithinBounds;
+					// Reset state and return true for a complete click
+					mousePressedStates[collider2D] = false;
+					return true;
 				}
 
-				isMouseDownWithinBounds = false; // Reset the state for the next check
-				return wasClickedWithinBounds;
+				// Reset state if mouse was not released within the same bounds
+				mousePressedStates[collider2D] = false;
 			}
 
 			return false;
 		}
 
-
+		private bool IsMouseWithinCollider(Collider2D collider2D)
+		{
+			var mousePosition = Mouse.GetState().Position.ToVector2();
+			return (collider2D is BoxCollider2D boxCollider && boxCollider.Bounds.Contains(mousePosition)) ||
+				   (collider2D is CircleCollider2D circleCollider && circleCollider.Bounds.Contains(mousePosition));
+		}
 
 		/// <summary>
 		/// Gets the current position of the mouse cursor.
