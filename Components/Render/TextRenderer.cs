@@ -38,6 +38,7 @@ namespace EC.Components.Render
 			set
 			{
 				text = value;
+				textSize = Font.MeasureString(value);
 				CalculateAlignedPosition();
 			}
 		}

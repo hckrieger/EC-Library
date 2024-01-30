@@ -94,14 +94,16 @@ namespace EC.CoreSystem
 		/// <typeparam name="T">The type of component to retrieve.</typeparam>
 		/// <returns>The component of the specified type, if it exists; otherwise, null.</returns>
 		public T GetComponent<T>() where T : Component
-        {
-            Type type = typeof(T);
-            if (components.TryGetValue(type, out Component component))
-            {
-                return component as T;
-            }
-            return null;
-        }
+		{
+			foreach (var component in components.Values)
+			{
+				if (component is T)
+				{
+					return (T)component;
+				}
+			}
+			return null;
+		}
 
 		/// <summary>
 		/// Checks whether the entity has a component of a specific type.
