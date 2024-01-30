@@ -85,11 +85,11 @@ namespace EC
 
 			commonServices = new Dictionary<Type, IService>
 			{
-				{ typeof(SceneManager), new SceneManager(this) },
+				{ typeof(RenderManager), new RenderManager(assetManager, _spriteBatch) },
 				{ typeof(DisplayManager), displayManager },
 				{ typeof(InputManager), inputManager },
-				{ typeof(RenderManager), new RenderManager(assetManager, _spriteBatch) },
 				{ typeof(CollisionManager), new CollisionManager() },
+				{ typeof(SceneManager), new SceneManager(this) },
 				
 				//more services to be added
 			};

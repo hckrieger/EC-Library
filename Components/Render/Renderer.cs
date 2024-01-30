@@ -20,10 +20,7 @@ namespace EC.Components.Renderers
 	{
 		protected RenderManager renderManager;
 
-		/// <summary>
-		/// Determines whether the renderer is visible
-		/// </summary>
-		public bool IsVisible { get; set; } = true;
+		private Entity entity;
 
 		/// <summary>
 		/// The Color used for rendering.
@@ -72,6 +69,17 @@ namespace EC.Components.Renderers
 		public Renderer(Game game, Entity entity) : base(entity)
 		{
 			renderManager = game.Services.GetService<RenderManager>();
+			this.entity = entity;
+		}
+
+
+		/// <summary>
+		/// Checks if the entity is visible; visibility is set through the DrawableGameComponent class that the entity inherits from
+		/// </summary>
+		/// <returns></returns>
+		protected bool IsEntityVisible()
+		{
+			return entity?.Visible ?? false;
 		}
 
 		/// <summary>

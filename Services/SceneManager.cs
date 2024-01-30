@@ -1,12 +1,6 @@
 ﻿using EC.CoreSystem;
 using EC.Services.AssetManagers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EC.Services
 {
@@ -16,7 +10,7 @@ namespace EC.Services
 	public class SceneManager : IService 
     {
         private Dictionary<string, Scene> scenes;
-        private Scene currentScene;
+        private Scene? currentScene;
         private Game game;
 
 		/// <summary>
@@ -38,7 +32,10 @@ namespace EC.Services
         {
             scene.ID = name;
             scenes[name] = scene;
-        }
+			game.Components.Add(scene);
+			scenes[name].Initialize();
+            scenes[name].Deactivate();
+		}
 
 		/// <summary>
 		/// Changes the current scene to a new scene.
@@ -52,38 +49,44 @@ namespace EC.Services
 
             if (currentScene != null)
             {
-                if (shouldUnloadAndRemoveCurrent)
-                    UnloadAndRemoveCurrentScene();
-                else
-                    currentScene.Deactivate();
+                //if (shouldUnloadAndRemoveCurrent)
+                //    UnloadAndRemoveCurrentScene();
+                //else
+                currentScene.Deactivate();
 			}
 
+			
+
             currentScene = scenes[name];
-            game.Components.Add(currentScene);
-            currentScene.Activate();
-            currentScene.Initialize();
-         
-        }
+
+
+			
+			currentScene.Activate();  // Activate if it's already added but was inactive
+			
+			 
+
+		}
 
 		/// <summary>
 		/// Unloads and removes the current scene from the SceneManager.
 		/// </summary>
-		private void UnloadAndRemoveCurrentScene()
-        {
-            if (currentScene != null)
-            {
-                GraphicsAssetManager assetManager = game.Services.GetService<GraphicsAssetManager>();
-                if (assetManager != null)
-                {
-                    assetManager.UnloadContent();
-                }
+		//private void UnloadAndRemoveCurrentScene()
+  //      {
+  //          if (currentScene != null)
+  //          {
+  //              GraphicsAssetManager assetManager = game.Services.GetService<GraphicsAssetManager>();
+  //              if (assetManager != null)
+  //              {
+  //                  assetManager.UnloadContent();
+  //              }
 
-                currentScene.Dispose();
-                scenes.Remove(currentScene.ID);
-                game.Components.Remove(currentScene);
+  //              currentScene.Dispose();
+		//		game.Components.Remove(currentScene);
+		//	 	scenes.Remove(currentScene.ID);
+                
 
-            }
-        }
+  //          }
+  //      }
 
-    }
+      }
 }

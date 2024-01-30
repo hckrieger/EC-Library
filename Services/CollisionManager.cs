@@ -22,57 +22,68 @@ namespace EC.Services
 		public enum CollisionSide { Top, Bottom, Left, Right, None }
 
 
-		/// <summary>
-		/// Determines if a circle and a rectangle intersect.  
-		/// </summary>
-		/// <param name="circle">Circle collider</param>
-		/// <param name="box">Box collider</param>
-		/// <returns></returns>
-		private bool CheckCircleBoxIntersection(CircleCollider2D circle, BoxCollider2D box) 
+		public bool ShapesIntersect(BoxCollider2D shape1, BoxCollider2D shape2)
+		{
+			return shape1.Bounds.Intersects(shape2.Bounds);
+		}
+
+
+		public bool ShapesIntersect(CircleCollider2D shape1, CircleCollider2D shape2)
+		{
+			float radiusSum = shape1.Bounds.Radius + shape2.Bounds.Radius;
+			return Vector2.DistanceSquared(shape1.Bounds.Center, shape2.Bounds.Center) <= radiusSum * radiusSum;
+		}
+
+		public bool ShapesIntersect(CircleCollider2D circle, BoxCollider2D box)
+		{
+			return CheckCircleBox(circle, box);
+		}
+
+		public bool ShapesIntersect(BoxCollider2D box, CircleCollider2D circle)
+		{
+			return CheckCircleBox(circle, box);
+		}
+
+
+		private bool CheckCircleBox(CircleCollider2D circle, BoxCollider2D box)
 		{
 			Vector2 closestPoint;
-
-
 			closestPoint.X = MathHelper.Clamp(circle.Bounds.Center.X, box.Bounds.Left, box.Bounds.Right);
 			closestPoint.Y = MathHelper.Clamp(circle.Bounds.Center.Y, box.Bounds.Top, box.Bounds.Bottom);
 
 			float distanceSquared = Vector2.DistanceSquared(circle.Bounds.Center, closestPoint);
-			return distanceSquared <= circle.Bounds.Radius * circle.Bounds.Radius;
+			float radiusSquared = circle.Bounds.Radius * circle.Bounds.Radius;
+
+			return distanceSquared <= radiusSquared;
+
 		}
 
-
-		/// <summary>ef
-		/// Determines if two colliders intersect. Supports BoxBox, CircleCircle, and BoxCircle collisions.
-		/// </summary>
-		/// <param name="collider1">The first collider, which can be either a BoxCollider2D or a CircleCollider2D.</param>
-		/// <param name="collider2">The second collider, which can be either a BoxCollider2D or a CircleCollider2D.</param>
-		/// <returns>True if the colliders intersect; otherwise, false.</returns>
-		/// <remarks>
-		/// This method checks for intersections between two colliders, handling different combinations:
-		/// - Box-Box collision using the Intersects method of Rectangle.
-		/// - Circle-Circle collision using the distance between centers and the sum of radii.
-		/// - Box-Circle and Circle-Box collision using the closest point to the circle on the box and checking the distance to the circle's center.
-		/// This method uses type checking and casting to determine the types of the colliders and then calls the appropriate logic for each type of collision.
-		/// </remarks>
-		public bool ShapesIntersect(Collider2D collider1, Collider2D collider2)
+		public bool ShapeOutOfBounds(CircleCollider2D circle, BoxCollider2D bounds)
 		{
-			if (collider1 is BoxCollider2D box1 && collider2 is BoxCollider2D box2)
+			Vector2 circleCenter = circle.Bounds.Center;
+			float radius = circle.Bounds.Radius;
+
+			if (circleCenter.X - radius < bounds.Bounds.Left ||
+				circleCenter.X + radius > bounds.Bounds.Right ||
+				circleCenter.Y - radius < bounds.Bounds.Top ||
+				circleCenter.Y + radius > bounds.Bounds.Bottom)
 			{
-				return box1.Bounds.Intersects(box2.Bounds);
+				return true;
 			}
-			else if (collider1 is CircleCollider2D circle1 && collider2 is CircleCollider2D circle2)
+
+			return false;
+		}
+
+		public bool ShapeOutOfBounds(BoxCollider2D box, BoxCollider2D bounds)
+		{
+			if (box.Bounds.Left < bounds.Bounds.Left ||
+				box.Bounds.Right > bounds.Bounds.Right ||
+				box.Bounds.Top < bounds.Bounds.Top ||
+				box.Bounds.Bottom > bounds.Bounds.Bottom)
 			{
-				float radiusSum = circle1.Bounds.Radius + circle2.Bounds.Radius;
-				return Vector2.DistanceSquared(circle1.Bounds.Center, circle2.Bounds.Center) <= radiusSum * radiusSum;
+				return true;
 			}
-			else if (collider1 is BoxCollider2D box && collider2 is CircleCollider2D circle)
-			{
-				return CheckCircleBoxIntersection(circle, box);
-			}
-			else if (collider1 is CircleCollider2D circleX && collider2 is BoxCollider2D boxX)
-			{
-				return CheckCircleBoxIntersection(circleX, boxX);
-			}
+
 			return false;
 		}
 

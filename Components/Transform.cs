@@ -1,10 +1,13 @@
-﻿using EC.CoreSystem;
+﻿using EC.Components.Render;
+using EC.Components.Renderers;
+using EC.CoreSystem;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +24,7 @@ namespace EC.Components
 		private float scale = 1f;
 		private Transform parent;
 		private List<Transform> children = null;
+
 
 		/// <summary> Triggered when the position is changed. </summary>
 		public event Action PositionChanged;
@@ -93,6 +97,7 @@ namespace EC.Components
 
 			}
 		}
+
 
 		/// <summary> Gets the world position of the entity, considering the hierarchy. </summary>
 		public Vector2 Position

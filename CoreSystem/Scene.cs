@@ -51,6 +51,17 @@ namespace EC.CoreSystem
 		}
 
 		/// <summary>
+		/// Adds the entity to the scene but also set its parent
+		/// </summary>
+		/// <param name="child">The child entity to be added</param>
+		/// <param name="parent">The parent entity that the child is being assigned to.</param>
+		protected void AddEntity(Entity child, Entity parent)
+		{
+			AddEntity(child);
+			child.Transform.Parent = parent.Transform;
+		}
+
+		/// <summary>
 		/// Removes a single entity from the scene. The entity will be removed at the beginning of the next update cycle.
 		/// </summary>
 		/// <param name="entity">The entity to remove from the scene.</param>
@@ -95,8 +106,8 @@ namespace EC.CoreSystem
 				Game.Components.Add(entity);
 
 				//If the entity has a transform, if it isn't the root entity and if it doesn't have a parent then add it as a parent to RootEntity. aefwef
-				if (entity.HasComponent<Transform>() && entity != RootEntity && entity.GetComponent<Transform>().Parent == null)
-					entity.GetComponent<Transform>().Parent = RootEntity.GetComponent<Transform>();
+				//if (entity.HasComponent<Transform>() && entity != RootEntity && entity.GetComponent<Transform>().Parent == null)
+				//	entity.GetComponent<Transform>().Parent = RootEntity.GetComponent<Transform>();
 			}
 
 			entitiesToAdd.Clear();
@@ -121,12 +132,24 @@ namespace EC.CoreSystem
 
 		private void SetVisibilityAndEnabled(bool enable)
 		{
+			if (this != null)
+				Reset();
+
 			foreach (Entity entity in entities)
 			{
+				if (entity != null)
+					entity.Reset();
 				entity.Enabled = entity.Visible = enable;
 			}
 
+
 			Enabled = Visible = enable;
+			
+		}
+
+		public virtual void Reset()
+		{
+
 		}
 
 		/// <summary>
@@ -134,7 +157,8 @@ namespace EC.CoreSystem
 		/// </summary>
 		public void Activate()
 		{
-			SetVisibilityAndEnabled(true); 
+			SetVisibilityAndEnabled(true);
+			
 		}
 
 		/// <summary>

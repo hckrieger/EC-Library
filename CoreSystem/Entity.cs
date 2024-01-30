@@ -1,4 +1,6 @@
 ﻿using EC.Components;
+using EC.Components.Render;
+using EC.Components.Renderers;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,9 @@ namespace EC.CoreSystem
 		public string ID { get; } = Guid.NewGuid().ToString();
         private readonly Dictionary<Type, Component> components = new Dictionary<Type, Component>();
 
+		private Renderer renderer;
+
+		public Entity Parent => Transform.Parent?.Entity;
 
 		/// <summary>
 		/// Because the Transform component is frequently used I'm acessing it directly in the Entity
@@ -35,6 +40,8 @@ namespace EC.CoreSystem
 
 
 		}
+
+
 
 		/// <summary>
 		/// Initializes a new instance of the Entity class.
@@ -136,14 +143,18 @@ namespace EC.CoreSystem
 
 		public override void Update(GameTime gameTime)
         {
-            foreach (var kvp in components)
-            {
-                Component component = kvp.Value;
-                if (component.IsEnabled)
-                {
-                    component.Update(gameTime);
-                }
-            }
+
+			
+				foreach (var kvp in components)
+				{
+					Component component = kvp.Value;
+					if (component.IsEnabled)
+					{
+						component.Update(gameTime);
+					}
+				}
+			
+
 
             base.Update(gameTime);
         }
@@ -151,16 +162,33 @@ namespace EC.CoreSystem
 
 		public override void Draw(GameTime gameTime)
 		{
-			foreach (var kvp in components)
-			{
-				Component component = kvp.Value;
-				if (component.IsEnabled)
+			
+				foreach (var kvp in components)
 				{
-					component.Draw();
+					Component component = kvp.Value;
+					if (component.IsEnabled)
+					{
+						component.Draw();
+					}
 				}
-			}
+			
 
 			base.Draw(gameTime);
 		}
+
+		public virtual void Reset()
+		{
+
+		}
+
+		//private bool IsParentRendererVisible()
+		//{
+		//	var rectangleRenderer = this.Parent?.GetComponent<RectangleRenderer>();
+		//	var circleRenderer = this.Parent?.GetComponent<CircleRenderer>();
+
+		//	// Check if either renderer is not null and visible
+		//	return (rectangleRenderer != null && rectangleRenderer.IsVisible) ||
+		//		   (circleRenderer != null && circleRenderer.IsVisible);
+		//}
 	}
 }

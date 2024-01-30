@@ -135,7 +135,7 @@ namespace EC.Components.Render
 		/// </summary>
 		public override void Draw()
 		{
-			if (IsVisible && Font != null) // Inherits IsVisible property from Renderer
+			if (IsEntityVisible() && Font != null) // Inherits IsVisible property from Renderer
 			{
 				renderManager.DrawString(Font, text, Transform.Position, Color, Transform?.Rotation ?? 0, Origin?.Value ?? Vector2.Zero, Transform?.Scale ?? 1f, SpriteEffects, LayerDepth);
 			}

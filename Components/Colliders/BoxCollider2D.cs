@@ -55,12 +55,14 @@ namespace EC.Components.Colliders
 				if (boundsNeedUpdate)
 				{
 					UpdateGlobalBounds();
-					boundsNeedUpdate = false;
+				    boundsNeedUpdate = false;
 				}
 
 				return boundsCache;
 			}
 		}
+
+	//	public Vector2 CenterBounds => new Vector2(Bounds.X, Bounds.Y) + new Vector2(Bounds.C
 
 		/// <summary>
 		/// Calculates the global bounds of the collider.

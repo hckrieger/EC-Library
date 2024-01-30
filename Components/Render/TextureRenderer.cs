@@ -45,7 +45,7 @@ namespace EC.Components.Render
 		/// </summary>
 		public override void Draw()
 		{
-			if (IsVisible && Texture != null)
+			if (IsEntityVisible() && Texture != null)
 			{
 				Vector2 origin = Origin?.Value ?? Vector2.Zero;
 
