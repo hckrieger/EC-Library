@@ -14,7 +14,7 @@ namespace EC.CoreSystem
 	/// </summary>
 	public class Scene : DrawableGameComponent
 	{
-		protected List<Entity> entities;
+		private List<Entity> entities;
 		private List<Entity> entitiesToAdd;
 		private List<Entity> entitiesToRemove;
 
@@ -59,6 +59,7 @@ namespace EC.CoreSystem
 		{
 			AddEntity(child);
 			child.Transform.Parent = parent.Transform;
+			child.DefaultParent = parent;
 		}
 
 		/// <summary>
@@ -130,22 +131,7 @@ namespace EC.CoreSystem
 		}
 
 
-		private void SetVisibilityAndEnabled(bool enable)
-		{
-			if (this != null)
-				Reset();
-
-			foreach (Entity entity in entities)
-			{
-				if (entity != null)
-					entity.Reset();
-				entity.Enabled = entity.Visible = enable;
-			}
-
-
-			Enabled = Visible = enable;
-			
-		}
+	
 
 		public virtual void Reset()
 		{
@@ -157,8 +143,8 @@ namespace EC.CoreSystem
 		/// </summary>
 		public void Activate()
 		{
-			SetVisibilityAndEnabled(true);
-			
+			SetVisibilityAndEnable(true);
+
 		}
 
 		/// <summary>
@@ -166,11 +152,28 @@ namespace EC.CoreSystem
 		/// </summary>
 		public void Deactivate()
 		{
-			SetVisibilityAndEnabled(false); 
+			SetVisibilityAndEnable(false);
 		}
 
 
-	
+		public void SetVisibilityAndEnable(bool visible)
+		{
+			foreach (var entity in entities)
+			{ 
+				if (visible)
+				{
+					entity.Visible = entity.IntendedVisible;
+					entity.Enabled = entity.IntendedEnable;
+				} else
+				{
+					entity.Visible = false;
+					entity.Enabled = false;
+				}
+
+			}
+
+			Enabled = Visible = visible;
+		}
 
 	}
 }

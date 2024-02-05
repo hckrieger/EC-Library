@@ -10,3 +10,4 @@ C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\EC.dll
 C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\refint\EC.dll
 C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\EC.pdb
 C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\ref\EC.dll
+C:\Users\hunte\source\repos\MonoGame\libraries\EC\obj\Debug\net6.0\EC.sourcelink.json

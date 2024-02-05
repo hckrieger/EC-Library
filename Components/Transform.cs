@@ -24,7 +24,7 @@ namespace EC.Components
 		private float scale = 1f;
 		private Transform parent;
 		private List<Transform> children = null;
-
+		private Entity entity;
 
 		/// <summary> Triggered when the position is changed. </summary>
 		public event Action PositionChanged;
@@ -68,13 +68,14 @@ namespace EC.Components
 				//If the new parent being assigned is different than it's current parent
 				if (parent != value)
 				{
+				
 					if (parent != null)
 					{
 						//If you remove the parent then keep the same world coordinates.
 						//or if you switch parents, keep the world coordinates the same unless explicitly changed, otherwise. 
-						LocalPosition = Position;
+						LocalPosition = Position - entity.DefaultParent.Transform.Position;
 						LocalRotation = Rotation;
-						LocalScale = Scale;
+						LocalScale = Scale; 
 					}
 
 
@@ -92,7 +93,12 @@ namespace EC.Components
 							parent.children = new List<Transform>();
 						parent.children.Add(this);
 
+					} else
+					{
+						parent = entity.DefaultParent.Transform;
 					}
+
+
 				}
 
 			}
@@ -135,6 +141,7 @@ namespace EC.Components
 		{
 			position = Vector2.Zero;
 			rotation = 0;
+			this.entity = entity;
 		}
 
 	}

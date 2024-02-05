@@ -86,6 +86,7 @@ namespace EC
 			commonServices = new Dictionary<Type, IService>
 			{
 				{ typeof(RenderManager), new RenderManager(assetManager, _spriteBatch) },
+				{ typeof(AudioAssetManager), new AudioAssetManager(Content) },
 				{ typeof(DisplayManager), displayManager },
 				{ typeof(InputManager), inputManager },
 				{ typeof(CollisionManager), new CollisionManager() },

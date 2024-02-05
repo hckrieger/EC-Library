@@ -1,6 +1,7 @@
 ﻿using EC.Components;
 using EC.Components.Colliders;
 using EC.Components.Render;
+using EC.Components.Renderers;
 using EC.Components.UI;
 using EC.CoreSystem;
 using Microsoft.Xna.Framework;
@@ -142,6 +143,46 @@ namespace EC.Utilities.Extensions
 			textRenderer.TextAlignment = alignment;
 			entity.AddComponent(textRenderer);
 
+		}
+
+		public static void CreateButton(this Entity entity, string textureName, Vector2 size, bool center,  Color color, Game game, Action onClickAction = null )
+		{
+			entity.LoadRectangleComponents(textureName, (int)size.X, (int)size.Y, color, game, true);
+
+			if (onClickAction != null)
+			{
+				var buttonComponent = new Button(game, entity);
+				buttonComponent.Clicked += onClickAction;
+				entity.AddComponent(buttonComponent);
+			}
+
+			if (center)
+			{
+				var renderer = entity.GetComponent<RectangleRenderer>();
+				entity.GetComponent<Origin>().Value = new Vector2(renderer.TextureWidth, renderer.TextureHeight) / 2;
+			}
+		}
+
+
+
+
+		public static void AddButtonText(this Entity button, string fontPath, string text, Color color, Game game, Action<Entity> addEntity, TextRenderer.Alignment textAlignment = TextRenderer.Alignment.Center)
+		{
+			var textEntity = new Entity(game);
+			textEntity.LoadTextComponents(fontPath, text, color, game, textAlignment);
+
+			textEntity.Transform.Parent = button.Transform;
+			textEntity.Transform.LocalPosition = Vector2.Zero;
+
+			var textRenderer = textEntity.GetComponent<TextRenderer>();
+			if (textRenderer != null)
+			{
+				
+				textRenderer.LayerDepth = button.GetComponent<RectangleRenderer>()?.LayerDepth + 0.1f ?? 0.1f;
+			}
+			textRenderer.LayerDepth = button.GetComponent<RectangleRenderer>().LayerDepth + .1f;
+
+			addEntity(textEntity);
 		}
 
 	}

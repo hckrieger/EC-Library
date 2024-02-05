@@ -13,6 +13,7 @@ namespace EC.Services
         private Scene? currentScene;
         private Game game;
 
+
 		/// <summary>
 		/// Initializes a new instance of the SceneManager class.
 		/// </summary>
@@ -49,18 +50,16 @@ namespace EC.Services
 
             if (currentScene != null)
             {
-                //if (shouldUnloadAndRemoveCurrent)
-                //    UnloadAndRemoveCurrentScene();
-                //else
-                currentScene.Deactivate();
+				//if (shouldUnloadAndRemoveCurrent)
+				//    UnloadAndRemoveCurrentScene();
+				//else
+				currentScene.Reset();
+				currentScene.Deactivate();
 			}
 
 			
 
             currentScene = scenes[name];
-
-
-			
 			currentScene.Activate();  // Activate if it's already added but was inactive
 			
 			 
