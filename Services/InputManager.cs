@@ -24,7 +24,7 @@ namespace EC.Services
 
 		private bool isMousePressedWithinBounds = false;
 		private Dictionary<Collider2D, bool> mousePressedStates = new Dictionary<Collider2D, bool>();
-
+		
 		/// <summary>
 		/// Initializes a new instance of the InputManager class.
 		/// </summary>
@@ -32,7 +32,7 @@ namespace EC.Services
 		/// <param name="game">The game instance this component belongs to.</param>
 		public InputManager(DisplayManager displayManager, Game game) : base(game)
         {
-            this.displayManager = displayManager;
+			this.displayManager = displayManager;
         }
 
 		/// <summary>
@@ -174,6 +174,7 @@ namespace EC.Services
 		private bool IsMouseWithinCollider(Collider2D collider2D)
 		{
 			var mousePosition = Mouse.GetState().Position.ToVector2();
+			mousePosition = displayManager.ConvertWindowToViewport(mousePosition);
 			return (collider2D is BoxCollider2D boxCollider && boxCollider.Bounds.Contains(mousePosition)) ||
 				   (collider2D is CircleCollider2D circleCollider && circleCollider.Bounds.Contains(mousePosition));
 		}
@@ -184,7 +185,8 @@ namespace EC.Services
 		/// <returns>The current position of the mouse cursor as a Vector2.</returns>
 		public Vector2 MousePosition()
         {
-            return currentMouseState.Position.ToVector2();
+			
+            return displayManager.ConvertWindowToViewport(currentMouseState.Position.ToVector2());
         }
 
 		/// <summary>
@@ -193,8 +195,8 @@ namespace EC.Services
 		/// <returns>True if the mouse is on the screen; otherwise, false.</returns>
 		public bool MouseOnScreen()
         {
-            if (MousePosition().X > 0 && MousePosition().X < displayManager.Width &&
-                MousePosition().Y > 0 && MousePosition().Y < displayManager.Height)
+            if (MousePosition().X > 0 && MousePosition().X < displayManager.WindowSize.X &&
+                MousePosition().Y > 0 && MousePosition().Y < displayManager.WindowSize.Y)
                 return true;
 
             return false;   

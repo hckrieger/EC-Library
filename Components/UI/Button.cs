@@ -21,8 +21,6 @@ namespace EC.Components.UI
 	{
 		public event Action Clicked;
 		private Collider2D collider2D;
-		private Game game;
-		private Entity entity;
 		private InputManager inputManager;
 
 		/// <summary>
@@ -41,8 +39,6 @@ namespace EC.Components.UI
 					collider2D = entity.GetComponent<CircleCollider2D>();
 			
 
-			this.game = game;
-			this.entity = entity;
 		}
 
 		/// <summary>
@@ -66,8 +62,6 @@ namespace EC.Components.UI
 		{
 
 
-			var mouseState = Mouse.GetState();
-			Vector2 mousePosition = new Vector2(mouseState.X, mouseState.Y);
 
 			if (collider2D is CircleCollider2D circleCollider)
 			{

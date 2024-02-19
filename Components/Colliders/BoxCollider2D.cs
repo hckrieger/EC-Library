@@ -28,6 +28,7 @@ namespace EC.Components.Colliders
 		{
 
 			localBounds = rectangle;
+			UpdateBoundsCache();
 		}
 
 

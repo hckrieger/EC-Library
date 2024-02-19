@@ -19,6 +19,7 @@ namespace EC.Components.Renderers
 	public abstract class Renderer : Component
 	{
 		protected RenderManager renderManager;
+		protected DisplayManager displayManager;
 
 		private Entity entity;
 
@@ -70,6 +71,7 @@ namespace EC.Components.Renderers
 		{
 			renderManager = game.Services.GetService<RenderManager>();
 			this.entity = entity;
+			displayManager = game.Services.GetService<DisplayManager>();	
 		}
 
 
