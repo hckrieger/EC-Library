@@ -118,5 +118,31 @@ namespace EC.Utilities
 		{
 			return random.NextDouble();
 		}
+
+		/// <summary>
+		/// Converts 2D grid coordinates to a 1D array of integers representing those areas
+		/// </summary>
+		/// <param name="point">The grid coordinates in Point form</param>
+		/// <param name="gridWidth">The width area of the grid</param>
+		/// <returns></returns>
+		public static int GridPointToIndex(Point point, int gridWidth)
+		{
+			return point.X + (point.Y * gridWidth);
+		}
+
+
+		/// <summary>
+		/// Converts a 1D array of integers to 2D grid coordinates. 
+		/// </summary>
+		/// <param name="index">the grid coordinates represeted by an integer index</param>
+		/// <param name="gridWidth">The width area of the grid</param>
+		/// <returns></returns>
+		public static Point GridIndexToPoint(int index, int gridWidth)
+		{
+			int columns = index % gridWidth;
+			int rows = index / gridWidth;
+
+			return new Point(columns, rows);
+		}
 	}
 }

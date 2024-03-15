@@ -20,6 +20,10 @@ namespace EC.Services
 
         private MouseState previousMouseState;
         private MouseState currentMouseState;
+
+		public MouseState PreviousMouseState => previousMouseState;
+		public MouseState CurrentMouseState => currentMouseState;
+
         private DisplayManager displayManager;
 
 		private bool isMousePressedWithinBounds = false;

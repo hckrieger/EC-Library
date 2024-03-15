@@ -26,6 +26,19 @@ namespace EC.CoreSystem
         public bool IntendedVisible { get; set; }
 		public bool IntendedEnable { get; set; }
 
+		//public bool EnableAndVisible
+		//{
+		//	get
+		//	{
+		//		return Visible = Enabled;
+		//	}
+
+		//	set
+		//	{
+		//		Visible = Enabled = value;
+		//	}
+		//}
+
         /// <summary>
         /// Because the Transform component is frequently used I'm acessing it directly in the Entity
         /// </summary>
@@ -44,6 +57,11 @@ namespace EC.CoreSystem
 
 		}
 
+		public void Active(bool trueOrFalse)
+		{
+			Enabled = trueOrFalse;
+			Visible = trueOrFalse;
+		}
 
 
 		/// <summary>

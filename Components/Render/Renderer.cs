@@ -29,7 +29,7 @@ namespace EC.Components.Renderers
 		public Color Color { get; set; } = Color.White;
 
 		/// <summary>
-		/// The dpth layer fro rendering.
+		/// The depth layer for rendering.
 		/// </summary>
 		public float LayerDepth { get; set; } = .5f;
 

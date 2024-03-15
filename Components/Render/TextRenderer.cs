@@ -126,7 +126,9 @@ namespace EC.Components.Render
 				case Alignment.Right:
 					origin.Value = new Vector2(textSize.X, 0);
 					break;
-					// Left alignment requires no adjustment as it's the default
+				case Alignment.Left:
+					origin.Value = Vector2.Zero;
+					break;
 			}
 		}
 

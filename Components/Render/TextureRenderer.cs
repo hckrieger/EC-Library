@@ -13,7 +13,7 @@ namespace EC.Components.Render
 	// Intermediate class for texture-based rendering
 	public abstract class TextureRenderer : Renderer
 	{
-		protected string textureName;
+		public string TextureName { get; set; }
 
 		public Texture2D Texture { get; set; }
 
@@ -51,6 +51,7 @@ namespace EC.Components.Render
 
 				// If SourceRectangle is null, the entire texture is drawn.
 				// If it's set, only that portion of the texture is drawn.
+
 				renderManager.DrawTexture(Texture, Transform.Position, SourceRectangle, Color, Transform.Rotation, origin, Transform?.Scale ?? 1f, SpriteEffects, LayerDepth);
 			}
 		}

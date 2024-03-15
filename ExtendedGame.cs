@@ -54,11 +54,6 @@ namespace EC
 			_graphics = new GraphicsDeviceManager(this);
 			
 			Content.RootDirectory = "Content";
-
-	
-			
-
-			
 		}
 
 
@@ -102,7 +97,7 @@ namespace EC
 			// Set the render target to our custom render target
 			GraphicsDevice.SetRenderTarget(renderTarget);
 			// Clear the render target with a default color
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(new Color(0, 20, 0));
 
 			_spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, blendState: BlendState.AlphaBlend);
 			// TODO: Add your drawing code here, which should use _spriteBatch to draw onto the renderTarget
@@ -130,6 +125,7 @@ namespace EC
 			commonServices = new Dictionary<Type, IService>
 			{
 				{ typeof(RenderManager), new RenderManager(assetManager, _spriteBatch) },
+				{ typeof(GraphicsAssetManager), new GraphicsAssetManager(Content, GraphicsDevice) },
 				{ typeof(AudioAssetManager), new AudioAssetManager(Content) },
 				{ typeof(DisplayManager), displayManager },
 				{ typeof(InputManager), inputManager },

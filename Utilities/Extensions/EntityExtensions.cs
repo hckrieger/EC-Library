@@ -43,8 +43,6 @@ namespace EC.Utilities.Extensions
 			SpriteRenderer spriteRenderer = new SpriteRenderer(name, game, entity);
 			entity.AddComponent(spriteRenderer);
 
-			
-
 			switch (colliderShape)
 			{
 				case ColliderShape.Rectangle:

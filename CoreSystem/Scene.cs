@@ -156,7 +156,7 @@ namespace EC.CoreSystem
 		}
 
 
-		public void SetVisibilityAndEnable(bool visible)
+		private void SetVisibilityAndEnable(bool visible)
 		{
 			foreach (var entity in entities)
 			{ 

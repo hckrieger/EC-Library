@@ -27,10 +27,10 @@ namespace EC.Components.Render
 		/// <param name="entity">The entity this renderer is associated with.</param>
 		public RectangleRenderer(string name, int width, int height, Color color, Game game, Entity entity) : base(game, entity)
 		{
-			textureName = name;
+			TextureName = name;
 			Color = color;
 
-			Texture = renderManager.GraphicsAssetManager.LoadRectangle(textureName, width, height);
+			Texture = renderManager.GraphicsAssetManager.LoadRectangle(TextureName, width, height);
 		}
 
 

@@ -10,7 +10,7 @@ namespace EC.Services
 	public class SceneManager : IService 
     {
         private Dictionary<string, Scene> scenes;
-        private Scene? currentScene;
+        public Scene? CurrentScene { get; set; }
         private Game game;
 
 
@@ -48,22 +48,20 @@ namespace EC.Services
             if (!scenes.ContainsKey(name))
                 throw new ArgumentException($"No scene with the name {name} exists");
 
-            if (currentScene != null)
+            if (CurrentScene != null)
             {
 				//if (shouldUnloadAndRemoveCurrent)
 				//    UnloadAndRemoveCurrentScene();
 				//else
-				currentScene.Reset();
-				currentScene.Deactivate();
+				CurrentScene.Reset();
+				CurrentScene.Deactivate();
 			}
 
 			
 
-            currentScene = scenes[name];
-			currentScene.Activate();  // Activate if it's already added but was inactive
+            CurrentScene = scenes[name];
+			CurrentScene.Activate();  // Activate if it's already added but was inactive
 			
-			 
-
 		}
 
 		/// <summary>
@@ -71,7 +69,7 @@ namespace EC.Services
 		/// </summary>
 		//private void UnloadAndRemoveCurrentScene()
   //      {
-  //          if (currentScene != null)
+  //          if (CurrentScene != null)
   //          {
   //              GraphicsAssetManager assetManager = game.Services.GetService<GraphicsAssetManager>();
   //              if (assetManager != null)
@@ -79,9 +77,9 @@ namespace EC.Services
   //                  assetManager.UnloadContent();
   //              }
 
-  //              currentScene.Dispose();
-		//		game.Components.Remove(currentScene);
-		//	 	scenes.Remove(currentScene.ID);
+  //              CurrentScene.Dispose();
+		//		game.Components.Remove(CurrentScene);
+		//	 	scenes.Remove(CurrentScene.ID);
                 
 
   //          }

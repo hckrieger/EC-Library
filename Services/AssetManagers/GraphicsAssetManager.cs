@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EC.Components.Render;
+using EC.CoreSystem;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -22,7 +24,7 @@ namespace EC.Services.AssetManagers
 		// Caches for textures and fonts.
 		private Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
         private Dictionary<string, SpriteFont> fontCache = new Dictionary<string, SpriteFont>();
-
+        private Dictionary<string, SpriteSheet> spriteSheetCache = new Dictionary<string, SpriteSheet>();
 		/// <summary>
 		/// Initializes a new instance of the GraphicsAssetManager class.
 		/// </summary>
@@ -78,6 +80,18 @@ namespace EC.Services.AssetManagers
             return font;
         }
 
+
+		public SpriteSheet LoadSpriteSheet(string spriteSheetName, Entity entity, Point gridSize, int gridIndex)
+		{
+			if (!spriteSheetCache.TryGetValue(spriteSheetName, out SpriteSheet spriteSheet))
+			{
+				spriteSheet = new SpriteSheet(entity, gridSize);
+				spriteSheetCache[spriteSheetName] = spriteSheet;
+			} 
+			spriteSheet.GridIndex = gridIndex;
+			return spriteSheet;
+		}
+
 		/// <summary>
 		/// Clears the entire cache, both textures and fonts. This can be useful when a large number of assets are no longer needed,
 		/// such as when changing levels or scenes.
@@ -86,6 +100,7 @@ namespace EC.Services.AssetManagers
         {
             textureCache.Clear();
             fontCache.Clear();
+            spriteSheetCache.Clear();
         }
 
 		/// <summary>
