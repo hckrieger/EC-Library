@@ -72,29 +72,8 @@ namespace EC.CoreSystem
 				entitiesToRemove.Add(entity);
 		}
 
-		/// <summary>
-		/// Adds multiple entities to the scene. The entities will be added at the beginning of the next update cycle.
-		/// </summary>
-		/// <param name="listedEntities">The entities to add to the scene.</param>
-		protected void AddEntities(params Entity[] listedEntities)
-		{
-			foreach (Entity entity in listedEntities) {
-				AddEntity(entity);
-			}
-		}
 
-		/// <summary>
-		/// Removes multiple entities from the scene. The entities will be removed at the beginning of the next update cycle.
-		/// </summary>
-		/// <param name="listedEntities">The entities to remove from the scene.</param>
-		protected void RemoveEntities(params Entity[] listedEntities)
-		{
-			foreach (Entity entity in listedEntities)
-			{
-				RemoveEntity(entity);
-			}
 
-		}
 
 		/// <summary>
 		/// Processes any pending additions or removals of entities. This method should be called once per update cycle.
@@ -118,6 +97,7 @@ namespace EC.CoreSystem
 				entity.RemoveAllComponents();
 				entities.Remove(entity);
 				Game.Components.Remove(entity);
+				entity.Dispose();
 			}
 
 			entitiesToRemove.Clear();

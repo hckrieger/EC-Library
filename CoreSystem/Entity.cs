@@ -57,12 +57,24 @@ namespace EC.CoreSystem
 
 		}
 
-		public void Active(bool trueOrFalse)
+		//public void Active(bool trueOrFalse)
+		//{
+		//	Enabled = trueOrFalse;
+		//	Visible = trueOrFalse;
+		//}
+
+		public bool IsActive
 		{
-			Enabled = trueOrFalse;
-			Visible = trueOrFalse;
+			get => Visible && Enabled;
+
+			set
+			{
+				Visible = value;
+				Enabled = value;
+			}
 		}
 
+		
 
 		/// <summary>
 		/// Initializes a new instance of the Entity class.

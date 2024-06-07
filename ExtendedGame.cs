@@ -31,6 +31,10 @@ namespace EC
 
 		protected bool IsFullScreen
 		{
+			get
+			{
+				return _graphics.IsFullScreen;
+			}
 			set
 			{
 				displayManager.ToggleFullScreen(value);
@@ -90,6 +94,11 @@ namespace EC
 			{
 				SetInternalResolution(displayManager.WindowSize.X, displayManager.WindowSize.Y);
 			}
+
+			if (inputManager.KeyJustPressed(Keys.F5))
+			{
+				IsFullScreen = !IsFullScreen;
+			}
 		}
 
 		protected override void Draw(GameTime gameTime)
@@ -97,7 +106,7 @@ namespace EC
 			// Set the render target to our custom render target
 			GraphicsDevice.SetRenderTarget(renderTarget);
 			// Clear the render target with a default color
-			GraphicsDevice.Clear(new Color(0, 20, 0));
+			GraphicsDevice.Clear(Color.Black);
 
 			_spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, blendState: BlendState.AlphaBlend);
 			// TODO: Add your drawing code here, which should use _spriteBatch to draw onto the renderTarget
@@ -157,6 +166,12 @@ namespace EC
 			displayManager.InternalResolution = new Point(width, height);
 			//displayManager.AdjustViewportForAspectRatio();
 			UpdateRenderTarget();
+		}
+
+		protected void ScaleResolutionToWindowSize(int width, int height, int scale = 1)
+		{
+			SetInternalResolution(width, height);
+			SetWindowSize(width * scale, height * scale);
 		}
 
 		private void UpdateRenderTarget()

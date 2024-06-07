@@ -36,11 +36,11 @@ namespace EC.Utilities.Extensions
 		/// <param name="game">The current game instance.</param>
 		/// <param name="colliderShape">The shape of the collider to be added. Defaults to None.</param>
 		/// <exception cref="ArgumentException">Thrown when an invalid collider shape is specified.</exception>
-		public static void LoadSpriteComponents(this Entity entity, string name, Game game, ColliderShape colliderShape = ColliderShape.None)
+		public static void LoadSpriteComponents(this Entity entity, string name, Game game, ColliderShape colliderShape = ColliderShape.None, Point gridSize = default, int gridIndex = 0)
 		{
 			entity.AddComponent(new Transform(entity));
 
-			SpriteRenderer spriteRenderer = new SpriteRenderer(name, game, entity);
+			SpriteRenderer spriteRenderer = new SpriteRenderer(name, game, entity, gridSize, gridIndex);
 			entity.AddComponent(spriteRenderer);
 
 			switch (colliderShape)
