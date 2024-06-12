@@ -1,7 +1,10 @@
 ﻿using EC.Components;
+using EC.Components.Render;
+using EC.Services.AssetManagers;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,14 +17,16 @@ namespace EC.CoreSystem
 	/// </summary>
 	public class Scene : DrawableGameComponent
 	{
-		private List<Entity> entities;
+		protected List<Entity> entities;
 		private List<Entity> entitiesToAdd;
 		private List<Entity> entitiesToRemove;
 
 		public string ID;
 
-
 		protected Entity RootEntity { get; }
+
+		private GraphicsAssetManager graphicsAssetManager;
+
 
 		/// <summary>
 		/// Initializes a new instance of the Scene class.
@@ -36,6 +41,8 @@ namespace EC.CoreSystem
 			RootEntity = new Entity(game);
 			RootEntity.AddComponent(new Transform(RootEntity));
 			AddEntity(RootEntity);
+
+			graphicsAssetManager = game.Services.GetService<GraphicsAssetManager>();	
 		}
 
 		
@@ -46,8 +53,13 @@ namespace EC.CoreSystem
 		/// <param name="entity">The entity to add to the scene.</param>
 		protected void AddEntity(Entity entity)
 		{
-			if (!entitiesToAdd.Contains(entity) && !entities.Contains(entity)) 
+			if (!entitiesToAdd.Contains(entity) 
+				&& !entities.Contains(entity))
+			{
 				entitiesToAdd.Add(entity);
+				entity.Initialize();
+			}
+				
 		}
 
 		/// <summary>
@@ -60,16 +72,22 @@ namespace EC.CoreSystem
 			AddEntity(child);
 			child.Transform.Parent = parent.Transform;
 			child.DefaultParent = parent;
+			child.Initialize();
 		}
 
 		/// <summary>
 		/// Removes a single entity from the scene. The entity will be removed at the beginning of the next update cycle.
 		/// </summary>
 		/// <param name="entity">The entity to remove from the scene.</param>
-		public void RemoveEntity(Entity entity)
+		protected void RemoveEntity(Entity entity)
 		{
 			if (!entitiesToRemove.Contains(entity) && entities.Contains(entity))
+			{
+				Debug.WriteLine("add to remove list");
 				entitiesToRemove.Add(entity);
+			
+			}
+				
 		}
 
 
@@ -78,45 +96,93 @@ namespace EC.CoreSystem
 		/// <summary>
 		/// Processes any pending additions or removals of entities. This method should be called once per update cycle.
 		/// </summary>
-		private void ProcessEntityChanges()
+		public void ProcessEntityChanges()
 		{
 			foreach (var entity in entitiesToAdd)
 			{
 				entities.Add(entity);
-				Game.Components.Add(entity);
+				//Game.Components.Add(entity);
 
-				//If the entity has a transform, if it isn't the root entity and if it doesn't have a parent then add it as a parent to RootEntity. aefwef
-				//if (entity.HasComponent<Transform>() && entity != RootEntity && entity.GetComponent<Transform>().Parent == null)
-				//	entity.GetComponent<Transform>().Parent = RootEntity.GetComponent<Transform>();
+		
 			}
 
 			entitiesToAdd.Clear();
 
 			foreach (var entity in entitiesToRemove)
-			{
+			{ 
+
+
+				if (entity.HasComponent<TextureRenderer>())
+				{
+					//dispose asset associated with renderer
+					graphicsAssetManager.UnloadGraphicsAsset(entity.GetComponent<TextureRenderer>().TextureName);
+				}
+
+				if (entity.HasComponent<TextRenderer>()) 
+				{
+					graphicsAssetManager.UnloadGraphicsAsset(entity.GetComponent<TextRenderer>().FontName);
+				}
+
 				entity.RemoveAllComponents();
 				entities.Remove(entity);
-				Game.Components.Remove(entity);
-				entity.Dispose();
+
+				Debug.WriteLine("Entities being removed");
+				
 			}
 
 			entitiesToRemove.Clear();
+		}
+
+		public override void Initialize()
+		{
+
+			foreach (var entity in entities)
+			{
+				entity.Initialize();
+			}
+
+			base.Initialize();
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			ProcessEntityChanges();
 
+
+
+			foreach (var entity in entities)
+			{
+				if (entity.Enabled)
+					entity.Update(gameTime);
+			}
+
 			base.Update(gameTime);	
 		}
 
 
-	
+
+		public override void Draw(GameTime gameTime)
+		{
+
+			foreach (var entity in entities)
+			{
+				if (entity.Visible)
+				{
+					entity.Draw(gameTime);
+				}
+			}
+
+			base.Draw(gameTime);
+
+
+		}
+
 
 		public virtual void Reset()
 		{
 
 		}
+
 
 		/// <summary>
 		/// Activates the scene, making all entities visible and enabled.

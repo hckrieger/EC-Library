@@ -72,23 +72,24 @@ namespace EC.Components.Render
 		/// <summary>
 		/// Gets the height of text in pixels
 		/// </summary>
-		public float Height => textSize.Y;	
+		public float Height => textSize.Y;
 
-		
-	
 
-		/// <summary>
-		/// Initializes a new instance of the TextRenderer class.
-		/// </summary>
-		/// <param name="fontName">The name of the Font to use for rendering the text.</param>
-		/// <param name="text">The initial text to render.</param>
-		/// <param name="color">The color of the text. Inherited from the Renderer class.</param>
-		/// <param name="game">The game instance this renderer belongs to.</param>
-		/// <param name="entity">The entity this renderer is associated with.</param>
-		public TextRenderer(string fontName, string text, Color color, Game game, Entity entity)
+        public string FontName { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the TextRenderer class.
+        /// </summary>
+        /// <param name="fontName">The name of the Font to use for rendering the text.</param>
+        /// <param name="text">The initial text to render.</param>
+        /// <param name="color">The color of the text. Inherited from the Renderer class.</param>
+        /// <param name="game">The game instance this renderer belongs to.</param>
+        /// <param name="entity">The entity this renderer is associated with.</param>
+        public TextRenderer(string fontName, string text, Color color, Game game, Entity entity)
 			: base(game, entity)
 		{
 			Font = renderManager.GraphicsAssetManager.LoadFont(fontName);
+			FontName = fontName;
 			this.text = text;
 			this.entity = entity;
 			Color = color; // Inherits Color property from Renderer

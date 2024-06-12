@@ -41,7 +41,7 @@ namespace EC.Services.AssetManagers
 		/// <summary>
 		/// Unloads all content managed by the ContentManager. This should be called when the content is no longer needed.
 		/// </summary>
-		public void UnloadContent()
+		public void UnloadTotalContent()
         {
             content.Unload();
             ClearTotalCache();
@@ -63,6 +63,22 @@ namespace EC.Services.AssetManagers
             return sprite;
         }
 
+
+		public void UnloadGraphicsAsset(string assetName)
+		{
+			if (textureCache.ContainsKey(assetName))
+			{
+				textureCache[assetName].Dispose();
+				textureCache.Remove(assetName);
+			}
+			
+			if (fontCache.ContainsKey(assetName)) 
+			{
+				fontCache.Remove(assetName);
+			}
+		}
+
+	
 
 		/// <summary>
 		/// Loads a font from the content pipeline. If the font is already loaded,
@@ -99,6 +115,10 @@ namespace EC.Services.AssetManagers
 		public void ClearTotalCache()
         {
             textureCache.Clear();
+
+			foreach(var texture in textureCache.Values)
+				texture.Dispose();
+			
             fontCache.Clear();
             spriteSheetCache.Clear();
         }

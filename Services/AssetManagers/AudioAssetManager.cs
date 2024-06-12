@@ -111,10 +111,32 @@ namespace EC.Services.AssetManagers
 		/// <summary>
 		/// Clears all cached audio assets. Useful when changing levels or scenes and the audio assets are no longer needed.
 		/// </summary>
-		public void ClearAudioCache()
+		public void ClearTotalAudioCache()
 		{
 			soundEffectsCache.Clear();
 			musicCache.Clear();
+
+			foreach (var sound in soundEffectsCache.Values)
+				sound.Dispose();
+
+			foreach (var music in musicCache.Values)
+				music.Dispose();
+
+		}
+
+		public void UnloadAudioAsset(string assetName)
+		{
+			if (soundEffectsCache.ContainsKey(assetName))
+			{
+				soundEffectsCache[assetName].Dispose();
+				soundEffectsCache.Remove(assetName);
+			}
+
+			if (musicCache.ContainsKey(assetName))
+			{
+				musicCache[assetName].Dispose();
+				musicCache.Remove(assetName);
+			}
 		}
 	}
 

@@ -133,7 +133,8 @@ namespace EC.Services
 		/// <summary>
 		/// Calculates and applies a viewport that maintains the aspect ratio of the internal resolution,
 		/// centered within the current window size or fullscreen resolution. This method ensures that the game's
-		/// graphics are not stretched or squashed, maintaining the intended aspect ratio.
+		/// graphics are not stretched or squashed, maintaining the 
+		/// aspect ratio.
 		/// </summary>
 
 		public void AdjustViewportForAspectRatio()

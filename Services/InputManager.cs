@@ -26,7 +26,6 @@ namespace EC.Services
 
         private DisplayManager displayManager;
 
-		private bool isMousePressedWithinBounds = false;
 		private Dictionary<Collider2D, bool> mousePressedStates = new Dictionary<Collider2D, bool>();
 		
 		/// <summary>

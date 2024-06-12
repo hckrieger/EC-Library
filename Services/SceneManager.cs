@@ -10,7 +10,7 @@ namespace EC.Services
 	public class SceneManager : IService 
     {
         private Dictionary<string, Scene> scenes;
-        public Scene? CurrentScene { get; set; }
+        public Scene CurrentScene { get; set; }
         private Game game;
 
 
@@ -43,7 +43,7 @@ namespace EC.Services
 		/// </summary>
 		/// <param name="name">The name of the scene to change to.</param>
 		/// <param name="shouldUnloadAndRemoveCurrent">Whether to unload and remove the current scene.</param>
-		public void ChangeScene(string name, bool shouldUnloadAndRemoveCurrent = false)
+		public void ChangeScene(string name)
         {
             if (!scenes.ContainsKey(name))
                 throw new ArgumentException($"No scene with the name {name} exists");
@@ -54,6 +54,7 @@ namespace EC.Services
 				//    UnloadAndRemoveCurrentScene();
 				//else
 				CurrentScene.Reset();
+				CurrentScene.ProcessEntityChanges();
 				CurrentScene.Deactivate();
 			}
 
@@ -64,26 +65,7 @@ namespace EC.Services
 			
 		}
 
-		/// <summary>
-		/// Unloads and removes the current scene from the SceneManager.
-		/// </summary>
-		//private void UnloadAndRemoveCurrentScene()
-  //      {
-  //          if (CurrentScene != null)
-  //          {
-  //              GraphicsAssetManager assetManager = game.Services.GetService<GraphicsAssetManager>();
-  //              if (assetManager != null)
-  //              {
-  //                  assetManager.UnloadContent();
-  //              }
 
-  //              CurrentScene.Dispose();
-		//		game.Components.Remove(CurrentScene);
-		//	 	scenes.Remove(CurrentScene.ID);
-                
-
-  //          }
-  //      }
 
       }
 }
