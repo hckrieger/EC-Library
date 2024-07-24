@@ -129,20 +129,24 @@ namespace EC
 		private void ServiceRegistration()
 		{
 			inputManager = new InputManager(displayManager, this);
-			GraphicsAssetManager assetManager = new GraphicsAssetManager(Content, _graphics.GraphicsDevice);
+			// Use the same GraphicsDevice for the GraphicsAssetManager
+			GraphicsAssetManager assetManager = new GraphicsAssetManager(Content, GraphicsDevice);
 
+			// Initialize services with consistent GraphicsDevice usage
 			commonServices = new Dictionary<Type, IService>
 			{
+				{ typeof(GraphicsAssetManager), assetManager },
 				{ typeof(RenderManager), new RenderManager(assetManager, _spriteBatch) },
-				{ typeof(GraphicsAssetManager), new GraphicsAssetManager(Content, GraphicsDevice) },
 				{ typeof(AudioAssetManager), new AudioAssetManager(Content) },
 				{ typeof(DisplayManager), displayManager },
 				{ typeof(InputManager), inputManager },
 				{ typeof(CollisionManager), new CollisionManager() },
 				{ typeof(SceneManager), new SceneManager(this) },
-				
-				//more services to be added
 			};
+
+
+			//more services to be added
+	
 
 			foreach (var kvp in commonServices)
 				Services.AddService(kvp.Key, kvp.Value);

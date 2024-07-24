@@ -35,8 +35,9 @@ namespace EC.Components.Render
 		public SpriteRenderer(string texturePath, Game game, Entity entity, Point gridSize = default, int gridIndex = 0) : base(game, entity)
 		{
 			TextureName = texturePath;
-			Texture = renderManager.GraphicsAssetManager.LoadSprite(texturePath);
+			
 			graphicsAssetManager = game.Services.GetService<GraphicsAssetManager>();
+			Texture = graphicsAssetManager.LoadSprite(texturePath);
 			this.game = game;
 			this.entity = entity;
 			this.texturePath = texturePath;

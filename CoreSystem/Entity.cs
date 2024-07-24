@@ -29,12 +29,12 @@ namespace EC.CoreSystem
         public bool IntendedVisible { get; set; }
 		public bool IntendedEnable { get; set; }
 
+		public Game Game { get; set; }
 
-
-        /// <summary>
-        /// Because the Transform component is frequently used I'm acessing it directly in the Entity
-        /// </summary>
-        public Transform Transform
+		/// <summary>
+		/// Because the Transform component is frequently used I'm acessing it directly in the Entity
+		/// </summary>
+		public Transform Transform
 		{
 			get
 			{
@@ -74,6 +74,9 @@ namespace EC.CoreSystem
 		/// <param name="game">The game instance to which this entity belongs.</param>
 		public Entity(Game game) 
         {
+
+			Game = game;
+
 			IntendedVisible = true;
 			IntendedEnable = true;
         }

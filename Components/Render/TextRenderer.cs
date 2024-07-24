@@ -18,6 +18,8 @@ namespace EC.Components.Render
 		private Vector2 alignedPosition;
 		private Vector2 textSize;
 		private Entity entity;
+		private StringBuilder dynamicTextBuilder;
+		private bool isDynamicText;
 
 		/// <summary>
 		/// Defines text alignment options.
@@ -37,8 +39,31 @@ namespace EC.Components.Render
 			get => text;
 			set
 			{
-				text = value;
-				textSize = Font.MeasureString(value);
+				if (isDynamicText)
+					throw new InvalidOperationException("Cannot set both Text and DynamicText. Please clear DynamicText before setting Text.");
+
+                text = value;
+				isDynamicText = false;
+				textSize = Font.MeasureString(text);
+				CalculateAlignedPosition();
+			}
+		}
+
+		public string DynamicText
+		{
+			get => dynamicTextBuilder?.ToString();
+			set
+			{
+				if (!string.IsNullOrEmpty(text))
+					throw new InvalidOperationException("Cannot set both Text and DynamicText. Please clear Text before setting DynamicText.");
+
+				if (dynamicTextBuilder == null)
+					dynamicTextBuilder = new StringBuilder();
+
+				dynamicTextBuilder.Clear();
+				dynamicTextBuilder.Append(value);
+				isDynamicText = true;
+				textSize = Font.MeasureString(dynamicTextBuilder.ToString());
 				CalculateAlignedPosition();
 			}
 		}
@@ -85,16 +110,19 @@ namespace EC.Components.Render
         /// <param name="color">The color of the text. Inherited from the Renderer class.</param>
         /// <param name="game">The game instance this renderer belongs to.</param>
         /// <param name="entity">The entity this renderer is associated with.</param>
-        public TextRenderer(string fontName, string text, Color color, Game game, Entity entity)
+        public TextRenderer(string fontName, string initialText, Color color, Game game, Entity entity)
 			: base(game, entity)
 		{
 			Font = renderManager.GraphicsAssetManager.LoadFont(fontName);
 			FontName = fontName;
-			this.text = text;
 			this.entity = entity;
+			
+			
 			Color = color; // Inherits Color property from Renderer
 			textAlignment = Alignment.Left; // Default alignment
-			textSize = Font.MeasureString(text);
+			isDynamicText = false;
+			textSize = Font.MeasureString(initialText);
+			text = initialText;
 			CalculateAlignedPosition();
 		}
 
@@ -141,8 +169,8 @@ namespace EC.Components.Render
 		{
 			if (IsEntityVisible() && Font != null) // Inherits IsVisible property from Renderer
 			{
-				
-				renderManager.DrawString(Font, text, Transform.Position, Color, Transform?.Rotation ?? 0, Origin?.Value ?? Vector2.Zero, Transform?.Scale ?? 1f, SpriteEffects, LayerDepth);
+				string textToDraw = isDynamicText ? dynamicTextBuilder.ToString() : text;
+				renderManager.DrawString(Font, textToDraw, Transform.Position, Color, Transform?.Rotation ?? 0, Origin?.Value ?? Vector2.Zero, Transform?.Scale ?? 1f, SpriteEffects, LayerDepth);
 			}
 		}
 	}

@@ -31,6 +31,8 @@ namespace EC.Components.Render
 		/// </summary>
 		public int TextureHeight => Texture?.Height ?? 0;
 
+		public int PixelQuantity => TextureWidth * TextureHeight;
+
 
 		public Vector2 TextureCenter => new Vector2(TextureWidth / 2, TextureHeight / 2);
 

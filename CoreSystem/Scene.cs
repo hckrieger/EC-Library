@@ -79,13 +79,24 @@ namespace EC.CoreSystem
 		/// Removes a single entity from the scene. The entity will be removed at the beginning of the next update cycle.
 		/// </summary>
 		/// <param name="entity">The entity to remove from the scene.</param>
-		protected void RemoveEntity(Entity entity)
+		protected void RemoveEntity(Entity entity, bool disposeAsset = false)
 		{
 			if (!entitiesToRemove.Contains(entity) && entities.Contains(entity))
 			{
 				Debug.WriteLine("add to remove list");
 				entitiesToRemove.Add(entity);
-			
+
+				if (disposeAsset)
+				{
+					if (entity.HasComponent<TextureRenderer>())
+						graphicsAssetManager.UnloadGraphicsAsset(entity.GetComponent<TextureRenderer>().TextureName);
+					
+
+					if (entity.HasComponent<TextRenderer>())
+						graphicsAssetManager.UnloadGraphicsAsset(entity.GetComponent<TextRenderer>().FontName);
+					
+				}
+
 			}
 				
 		}
@@ -112,16 +123,7 @@ namespace EC.CoreSystem
 			{ 
 
 
-				if (entity.HasComponent<TextureRenderer>())
-				{
-					//dispose asset associated with renderer
-					graphicsAssetManager.UnloadGraphicsAsset(entity.GetComponent<TextureRenderer>().TextureName);
-				}
 
-				if (entity.HasComponent<TextRenderer>()) 
-				{
-					graphicsAssetManager.UnloadGraphicsAsset(entity.GetComponent<TextRenderer>().FontName);
-				}
 
 				entity.RemoveAllComponents();
 				entities.Remove(entity);

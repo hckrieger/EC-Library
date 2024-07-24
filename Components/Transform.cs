@@ -26,6 +26,9 @@ namespace EC.Components
 		private List<Transform> children = null;
 		private Entity entity;
 
+
+		public Entity Entity => entity;
+
 		/// <summary> Triggered when the position is changed. </summary>
 		public event Action PositionChanged;
 

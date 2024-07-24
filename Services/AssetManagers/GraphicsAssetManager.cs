@@ -20,9 +20,10 @@ namespace EC.Services.AssetManagers
     {
         private ContentManager content;
         private GraphicsDevice graphics;
+		public GraphicsDevice GraphicsDevice { get { return graphics; } }
 
 		// Caches for textures and fonts.
-		private Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
+		public Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
         private Dictionary<string, SpriteFont> fontCache = new Dictionary<string, SpriteFont>();
         private Dictionary<string, SpriteSheet> spriteSheetCache = new Dictionary<string, SpriteSheet>();
 		/// <summary>
